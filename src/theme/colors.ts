@@ -1,0 +1,12 @@
+export const COLORS = {
+	FILTER: {
+		PLAYER_COUNT: '#fcba03',
+		COMPLEXITY: '#c24029',
+		GAME_LENGTH: '#399620'
+	},
+	BACKGROUND: '#222222',
+	CONTROL_COLOR: '#444444',
+	TEXT_COLOR: '#ddd',
+	ON_SURFACE: '#FFF',
+	SURFACE: '#000000'
+} as const
