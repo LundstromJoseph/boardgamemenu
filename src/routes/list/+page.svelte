@@ -62,4 +62,10 @@
 		gap: 0.3em;
 		padding-bottom: var(--bottom-bar-height);
 	}
+
+	@media (min-width: 800px) {
+		.result-container {
+			grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		}
+	}
 </style>
