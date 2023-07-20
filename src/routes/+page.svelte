@@ -5,6 +5,8 @@
 	import Header from '../components/typography/Header.svelte'
 	import { _handleSubmit } from './+page'
 	import { onMount } from 'svelte'
+	import Text from '../components/typography/Text.svelte'
+	import { COLORS } from '../theme/colors'
 
 	let mounted = false
 	export let username: string = ''
@@ -15,11 +17,19 @@
 	onMount(() => {
 		mounted = true
 	})
+
+	let errorMessage: string
+
+	const submit = (event: Event & { currentTarget: EventTarget & HTMLFormElement }) => {
+		_handleSubmit(event).catch((e) => {
+			errorMessage = e.body.message
+		})
+	}
 </script>
 
 {#if mounted}
 	<form
-		on:submit={_handleSubmit}
+		on:submit={submit}
 		style="display: flex; justify-content: center;"
 		out:fade={{ duration: 500 }}
 	>
@@ -33,6 +43,11 @@
 			<div in:fade={{ delay: delay * 2, duration: duration + delay * 1 }}>
 				<input bind:value={username} class="input" id="username" />
 			</div>
+			{#if errorMessage}
+				<div>
+					<Text color={COLORS.ERROR}>{errorMessage}</Text>
+				</div>
+			{/if}
 			<div in:fade={{ delay: delay * 3, duration: duration + delay * 0 }}>
 				<div class="button-wrapper">
 					<RoundButton type="submit"><i class="fa-solid fa-arrow-right fa-xl" /></RoundButton>

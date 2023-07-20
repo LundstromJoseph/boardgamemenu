@@ -2,6 +2,8 @@ import { browser } from '$app/environment'
 import { get } from 'svelte/store'
 import { boardgameStore } from '../../../store/boardgames'
 import { loadFromBgg } from './loadFromBgg'
+import { validUserId } from '../../../fn/validation'
+import { error } from '@sveltejs/kit'
 
 export const _loadBoardgames = async (userId: string) => {
 	if (browser) {
@@ -19,12 +21,19 @@ export const _loadBoardgames = async (userId: string) => {
 }
 
 export const load = async ({ params }) => {
+	const userId = params.slug
+	if (!validUserId(userId)) {
+		throw error(404, 'User cannot be found')
+	}
 	return {
-		userId: params.slug
+		userId
 	}
 }
 
 const loadAndSaveFromBgg = async (userId: string) => {
+	if (!validUserId(userId)) {
+		throw error(500, 'Cannot load boardgames')
+	}
 	const { boardgames } = await loadFromBgg(userId)
 	boardgameStore.set({
 		userId,

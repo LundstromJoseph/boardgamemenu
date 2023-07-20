@@ -8,5 +8,6 @@ export const COLORS = {
 	CONTROL_COLOR: '#444444',
 	TEXT_COLOR: '#ddd',
 	ON_SURFACE: '#FFF',
-	SURFACE: '#000000'
+	SURFACE: '#000000',
+	ERROR: '#D54545'
 } as const
