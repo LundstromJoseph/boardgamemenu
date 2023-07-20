@@ -28,7 +28,7 @@
 </script>
 
 <img
-	src="placeholder.png"
+	src="/placeholder.png"
 	use:observe
 	on:visible={onVisible}
 	class:show
