@@ -6,6 +6,7 @@
 	import Title from './typography/Title.svelte'
 
 	export let userId: string
+	export let boardgameCount: number
 
 	const handleReload = () => {
 		boardgameStore.set({
@@ -22,11 +23,13 @@
 		})
 		goto('/')
 	}
+
+	$: text = userId + (boardgameCount ? ` (${boardgameCount} games)` : '')
 </script>
 
 <div class="top-bar" style="--height: {TOP_BAR_HEIGHT}px;">
 	<div class="content">
-		<Title>{userId}</Title>
+		<Title>{text}</Title>
 		<div class="icons">
 			<TransparentButton on:click={handleReload}>
 				<i style="color: white;" class="fa-solid fa-rotate-right fa-xl" />

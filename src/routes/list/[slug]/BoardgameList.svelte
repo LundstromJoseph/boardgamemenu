@@ -20,7 +20,7 @@
 	)
 </script>
 
-<TopBar {userId} />
+<TopBar {userId} boardgameCount={items.length} />
 <BottomBar />
 <div
 	class="result-container"
