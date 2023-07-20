@@ -61,17 +61,33 @@ const loadCollection = async (userId: string): Promise<Collection> => {
 const prepareStats = async (ids: string[]): Promise<Record<string, Boardgame['stats']>> => {
 	const idChunks = chunkBoardgameIds(ids)
 	const stats: Record<string, Boardgame['stats']> = {}
-	for (const chunk of idChunks) {
+
+	const prepareOneChunk = async (chunk: string[]) => {
 		const boardgames = await loadBoardgames(chunk)
-		for (const item of boardgames.items.item) {
-			stats[item.id] = {
+		return boardgames.items.item.map((item) => ({
+			id: item.id,
+			stats: {
 				complexityRating: Number(item.statistics.ratings.averageweight.value),
 				gameLength: Number(item.playingtime.value),
 				maxPlayers: Number(item.maxplayers.value),
 				minPlayers: Number(item.minplayers.value)
 			}
-		}
+		}))
 	}
+
+	const promises: Promise<{ stats: Boardgame['stats']; id: string }[]>[] = []
+	for (const chunk of idChunks) {
+		promises.push(prepareOneChunk(chunk))
+	}
+
+	const chunks = await Promise.all(promises)
+
+	chunks
+		.flatMap((it) => it)
+		.forEach((it) => {
+			stats[it.id] = it.stats
+		})
+
 	return stats
 }
 
