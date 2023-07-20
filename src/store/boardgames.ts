@@ -2,9 +2,15 @@ import { browser } from '$app/environment'
 import { writable } from 'svelte/store'
 import type { Boardgame } from '../types/boardgames'
 
-const BOARDGAMES_KEY = 'boardgames'
+const BOARDGAMES_KEY = 'boardgamepickerstore'
 
-export const boardgameStore = writable<Boardgame[]>([])
+export const boardgameStore = writable<{
+	userId: string | undefined
+	boardgames: Boardgame[]
+}>({
+	userId: undefined,
+	boardgames: []
+})
 
 if (browser) {
 	const stored = localStorage.getItem(BOARDGAMES_KEY)

@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
 	import { page } from '$app/stores'
-	import Button from '../../components/Button.svelte'
-	import DefaultContainer from '../../components/DefaultContainer.svelte'
-	import Row from '../../components/Row.svelte'
-	import Header from '../../components/typography/Header.svelte'
-	import Text from '../../components/typography/Text.svelte'
-	import { clearUserId } from '../../store/userId'
+	import Button from '../../../components/Button.svelte'
+	import DefaultContainer from '../../../components/DefaultContainer.svelte'
+	import Row from '../../../components/Row.svelte'
+	import Header from '../../../components/typography/Header.svelte'
+	import Text from '../../../components/typography/Text.svelte'
+	import { clearUserId } from '../../../store/userId'
 
 	const userId = $page.url.searchParams.get('userId') //Get from store instead?
 

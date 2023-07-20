@@ -46,27 +46,20 @@ sw.addEventListener('fetch', (event) => {
 
 		// `build`/`files` can always be served from the cache
 		if (ASSETS.includes(url.pathname)) {
-			const cached = await cache.match(url.pathname)
-			if (!cached) throw new Error('Cannot find response')
-			return cached
+			cache.match(url.pathname) as Promise<Response>
 		}
 
 		try {
 			const response = await fetch(event.request)
 
 			if (response.status === 200) {
-				cache.put(event.request, response.clone())
+				event.waitUntil(cache.put(event.request, response.clone()))
 			}
 
 			return response
 		} catch {
-			const cached = await cache.match(url.pathname)
-			if (!cached) throw new Error('Cannot find response')
-			return cached
+			return cache.match(url.pathname) as Promise<Response>
 		}
 	}
-
-	respond().then((e) => {
-		if (e) event.respondWith(e)
-	})
+	event.respondWith(respond())
 })

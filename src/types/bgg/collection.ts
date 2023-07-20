@@ -29,7 +29,7 @@ export type Item = {
 
 export type Name = {
 	sortindex: string
-	$t: string
+	'_@ttribute': string
 }
 
 export type Status = {

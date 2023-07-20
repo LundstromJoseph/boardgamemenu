@@ -1,26 +1,31 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition'
 	import { COLORS } from '../theme/colors'
 
 	export let el: HTMLElement | undefined = undefined
 	export let selected = false
 	export let color: string = COLORS.TEXT_COLOR
-	const offset = 20
+	export let type: HTMLButtonElement['type'] = 'button'
 </script>
 
 {#if selected}
-	<button class="button selected-button" style="background-color: {color};" bind:this={el} on:click>
+	<button
+		{type}
+		class="button selected-button"
+		style="background-color: {color};"
+		bind:this={el}
+		on:click
+	>
 		<slot />
 	</button>
 {:else}
-	<button class="button" style="background-color: {color};" bind:this={el} on:click>
+	<button {type} class="button" style="background-color: {color};" bind:this={el} on:click>
 		<slot />
 	</button>
 {/if}
 
 <style>
 	.button {
-		border-radius: 99px;
+		border-radius: 50%;
 		width: 74px;
 		height: 74px;
 		border-width: 1;

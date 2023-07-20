@@ -1,8 +1,8 @@
 import { error } from '@sveltejs/kit'
-import * as xml2json from 'xml2json'
-import type { Boardgames } from '../../types/bgg/boardgames'
-import type { Collection } from '../../types/bgg/collection'
-import type { Boardgame } from '../../types/boardgames'
+import { xml2json } from 'xml2json-light'
+import type { Boardgames } from '../../../types/bgg/boardgames'
+import type { Collection } from '../../../types/bgg/collection'
+import type { Boardgame } from '../../../types/boardgames'
 
 const ACCEPTED = 202
 const OK = 200
@@ -20,7 +20,8 @@ const promise = async (url: string): Promise<readonly [number, string]> => {
 }
 
 const parseResponse = <T>(text: string): T => {
-	return xml2json.toJson(text, { object: true }) as unknown as T
+	const response: T = xml2json(text) as unknown as T
+	return response
 }
 
 const chunkBoardgameIds = (ids: string[]) => {
@@ -44,16 +45,12 @@ const loadBoardgames = async (ids: string[]): Promise<Boardgames> => {
 	}
 }
 
-const loadCollection = async (url: URL): Promise<Collection> => {
-	const userId = url.searchParams.get('userId')
-	if (!userId) {
-		throw error(500, 'Could not get boardgames for user')
-	}
+const loadCollection = async (userId: string): Promise<Collection> => {
 	const [status, response] = await promise(collectionUrl(userId))
 	//const [status, response] = [200, MOCK_RESPONSE]
 	if (status === ACCEPTED) {
 		await new Promise((res) => setTimeout(res, 500))
-		return loadCollection(url)
+		return loadCollection(userId)
 	} else if (status === OK) {
 		return parseResponse(response)
 	} else {
@@ -78,8 +75,8 @@ const prepareStats = async (ids: string[]): Promise<Record<string, Boardgame['st
 	return stats
 }
 
-export async function load(args): Promise<{ boardgames: Boardgame[] }> {
-	const collection = await loadCollection(args.url)
+export async function loadFromBgg(userId: string): Promise<{ boardgames: Boardgame[] }> {
+	const collection = await loadCollection(userId)
 	if (!collection) {
 		throw error(500, 'Could not get boardgames for user')
 	}
@@ -89,7 +86,7 @@ export async function load(args): Promise<{ boardgames: Boardgame[] }> {
 	return {
 		boardgames: collection.items.item.map((it) => ({
 			image: it.image,
-			name: it.name.$t,
+			name: it.name['_@ttribute'],
 			stats: stats[it.objectid]
 		}))
 	}

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { observe } from '../../directive/observe'
-	import type { Boardgame } from '../../types/boardgames'
+	import { observe } from '../../../directive/observe'
+	import type { Boardgame } from '../../../types/boardgames'
 
 	export let item: Boardgame
 	export let width: number = 0
