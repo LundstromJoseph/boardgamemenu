@@ -20,22 +20,13 @@
 		<div>
 			<slot name="title" />
 		</div>
-		<div class="options">
+		<div>
 			<slot name="options" />
 		</div>
 	</div>
 </div>
 
 <style>
-	.options {
-		display: flex;
-		flex-wrap: wrap;
-		row-gap: 1em;
-		column-gap: 0.2em;
-		justify-content: space-evenly;
-		align-items: center;
-		width: 100%;
-	}
 	.container {
 		position: fixed;
 		display: flex;

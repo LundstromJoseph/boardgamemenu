@@ -5,29 +5,19 @@
 	export let selected = false
 	export let color: string = COLORS.TEXT_COLOR
 	export let type: HTMLButtonElement['type'] = 'button'
+
+	$: classes = selected ? 'button selected-button' : 'button'
 </script>
 
-{#if selected}
-	<button
-		{type}
-		class="button selected-button"
-		style="background-color: {color};"
-		bind:this={el}
-		on:click
-	>
-		<slot />
-	</button>
-{:else}
-	<button {type} class="button" style="background-color: {color};" bind:this={el} on:click>
-		<slot />
-	</button>
-{/if}
+<button {type} class={classes} style="background-color: {color};" bind:this={el} on:click>
+	<slot />
+</button>
 
 <style>
 	.button {
+		width: 100%;
+		aspect-ratio: 1/1;
 		border-radius: 50%;
-		width: 74px;
-		height: 74px;
 		border-width: 1;
 		border-color: #000;
 		border-style: solid;

@@ -34,7 +34,9 @@
 				<input bind:value={username} class="input" id="username" />
 			</div>
 			<div in:fade={{ delay: delay * 3, duration: duration + delay * 0 }}>
-				<RoundButton type="submit"><i class="fa-solid fa-arrow-right fa-xl" /></RoundButton>
+				<div class="button-wrapper">
+					<RoundButton type="submit"><i class="fa-solid fa-arrow-right fa-xl" /></RoundButton>
+				</div>
 			</div>
 		</div>
 	</form>
@@ -49,6 +51,11 @@
 		align-items: center;
 		gap: 24px;
 		flex-direction: column;
+	}
+
+	.button-wrapper {
+		width: 76px;
+		height: 76px;
 	}
 
 	.input {

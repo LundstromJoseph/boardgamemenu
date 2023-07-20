@@ -5,10 +5,12 @@
 /// <reference lib="webworker" />
 import { build, files, version } from '$service-worker'
 
+const APP_VERSION = 1.1
+
 const sw = self as unknown as ServiceWorkerGlobalScope
 
 // Create a unique cache name for this deployment
-const CACHE = `cache-${version}`
+const CACHE = `cache-${version}-${APP_VERSION}`
 
 const ASSETS = [
 	...build, // the app itself

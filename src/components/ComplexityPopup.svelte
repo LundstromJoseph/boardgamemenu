@@ -20,7 +20,7 @@
 
 <FilterPopup>
 	<Title slot="title">Complexity</Title>
-	<svelte:fragment slot="options">
+	<div slot="options" class="slider-container">
 		<TwoPointSlider bind:range onEnd={save} accentColor={COLORS.FILTER.COMPLEXITY} />
 		<div style="flex-grow: 1;">
 			<Title align="end">{`${weightToText(complexity[0])} (${complexity[0]})`}</Title>
@@ -31,5 +31,12 @@
 		<div style="flex-grow: 1;">
 			<Title align="start">{`${weightToText(complexity[1])} (${complexity[1]})`}</Title>
 		</div>
-	</svelte:fragment>
+	</div>
 </FilterPopup>
+
+<style>
+	.slider-container {
+		display: flex;
+		flex-wrap: wrap;
+	}
+</style>

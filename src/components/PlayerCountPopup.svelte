@@ -1,12 +1,11 @@
 <script lang="ts">
+	import { HIGHEST_PLAYER_COUNT } from '../fn/playerCount'
 	import { playerCountStore } from '../store/filters'
-	import { COLORS } from '../theme/colors'
 	import FilterPopup from './FilterPopup.svelte'
-	import RoundButton from './RoundButton.svelte'
-	import IconText from './typography/IconText.svelte'
+	import PlayerCountButton from './PlayerCountButton.svelte'
 	import Title from './typography/Title.svelte'
 
-	$: playerCount = $playerCountStore
+	const array = Array.from(Array(HIGHEST_PLAYER_COUNT + 1).keys())
 
 	const update = (count: number) => {
 		playerCountStore.set(count)
@@ -15,92 +14,20 @@
 
 <FilterPopup>
 	<Title slot="title">Number of players</Title>
-	<svelte:fragment slot="options">
-		<div class="wrapper">
-			<RoundButton
-				color={COLORS.FILTER.PLAYER_COUNT}
-				selected={playerCount === 1}
-				on:click={() => update(1)}
-			>
-				<IconText>1</IconText>
-			</RoundButton>
-		</div>
-		<div class="wrapper">
-			<RoundButton
-				color={COLORS.FILTER.PLAYER_COUNT}
-				selected={playerCount === 2}
-				on:click={() => update(2)}
-			>
-				<IconText>2</IconText>
-			</RoundButton>
-		</div>
-
-		<div class="wrapper">
-			<RoundButton
-				color={COLORS.FILTER.PLAYER_COUNT}
-				selected={playerCount === 3}
-				on:click={() => update(3)}
-			>
-				<IconText>3</IconText>
-			</RoundButton>
-		</div>
-
-		<div class="wrapper">
-			<RoundButton
-				color={COLORS.FILTER.PLAYER_COUNT}
-				selected={playerCount === 4}
-				on:click={() => update(4)}
-			>
-				<IconText>4</IconText>
-			</RoundButton>
-		</div>
-
-		<div class="wrapper">
-			<RoundButton
-				color={COLORS.FILTER.PLAYER_COUNT}
-				selected={playerCount === 5}
-				on:click={() => update(5)}
-			>
-				<IconText>5</IconText>
-			</RoundButton>
-		</div>
-
-		<div class="wrapper">
-			<RoundButton
-				color={COLORS.FILTER.PLAYER_COUNT}
-				selected={playerCount === 6}
-				on:click={() => update(6)}
-			>
-				<IconText>6</IconText>
-			</RoundButton>
-		</div>
-
-		<div class="wrapper">
-			<RoundButton
-				color={COLORS.FILTER.PLAYER_COUNT}
-				selected={playerCount === 7}
-				on:click={() => update(7)}
-			>
-				<IconText>7+</IconText>
-			</RoundButton>
-		</div>
-
-		<div class="wrapper">
-			<RoundButton
-				color={COLORS.FILTER.PLAYER_COUNT}
-				on:click={() => update(0)}
-				selected={playerCount === 0}
-			>
-				<IconText>Any</IconText>
-			</RoundButton>
-		</div>
-	</svelte:fragment>
+	<div slot="options" class="options">
+		{#each array as index}
+			<PlayerCountButton {index} {update} />
+		{/each}
+	</div>
 </FilterPopup>
 
 <style>
-	.wrapper {
-		display: flex;
-		flex-grow: 1;
-		justify-content: center;
+	.options {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		row-gap: 1em;
+		column-gap: 0.2em;
+		align-items: center;
+		width: 100%;
 	}
 </style>
