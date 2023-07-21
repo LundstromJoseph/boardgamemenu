@@ -1,6 +1,8 @@
 import { goto } from '$app/navigation'
 import { error } from '@sveltejs/kit'
+import { get } from 'svelte/store'
 import { validUserId } from '../fn/validation'
+import { boardgameStore } from '../store/boardgames'
 
 export const _handleSubmit = async (
 	event: Event & { currentTarget: EventTarget & HTMLFormElement }
@@ -15,4 +17,11 @@ export const _handleSubmit = async (
 		)
 	}
 	await goto(`/list/${value}`)
+}
+
+export const load = () => {
+	const data = get(boardgameStore)
+	if (data && data.userId && validUserId(data.userId)) {
+		goto(`/list/${data.userId}`)
+	}
 }
