@@ -30,4 +30,16 @@
 		align-items: center;
 		width: 100%;
 	}
+
+	@media (min-width: 500px) {
+		.options {
+			grid-template-columns: repeat(7, 1fr);
+		}
+	}
+
+	@media (min-width: 800px) {
+		.options {
+			grid-template-columns: repeat(10, 1fr);
+		}
+	}
 </style>
