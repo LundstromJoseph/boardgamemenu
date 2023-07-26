@@ -14,5 +14,5 @@
 {:then loadedData}
 	<BoardgameList userId={loadedData.userId} items={loadedData.boardgames} />
 {:catch error}
-	<Error />
+	<Error userId={data.userId} />
 {/await}

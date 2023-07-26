@@ -8,7 +8,7 @@
 	import Text from '../../../components/typography/Text.svelte'
 	import { clearUserId } from '../../../store/userId'
 
-	const userId = $page.url.searchParams.get('userId') //Get from store instead?
+	export let userId: string
 
 	function goHome() {
 		clearUserId()

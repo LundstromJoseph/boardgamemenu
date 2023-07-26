@@ -8,6 +8,7 @@ export type Boardgames = {
 
 export type Items = {
 	item: Item[]
+	[x: string | number | symbol]: unknown
 }
 
 export type Item = {
@@ -17,12 +18,15 @@ export type Item = {
 	playingtime: { value: number }
 	description: string
 	statistics: Statistics
+	[x: string | number | symbol]: unknown
 }
 
 export type Statistics = {
 	ratings: Ratings
+	[x: string | number | symbol]: unknown
 }
 
 export type Ratings = {
 	averageweight: { value: number }
+	[x: string | number | symbol]: unknown
 }
