@@ -43,18 +43,21 @@
 			<GameLengthPopup />
 		{/if}
 		<SectionButton
+			label={'Change player count'}
 			color={COLORS.FILTER.PLAYER_COUNT}
 			on:click={() => handleClick('player_count')}
 			icon="fa-users"
 			text={formatPlayerCount($playerCountStore)}
 		/>
 		<SectionButton
+			label={'Change complexity'}
 			color={COLORS.FILTER.COMPLEXITY}
 			icon={'fa-calculator'}
 			text={formatComplexityRange($complexityStore)}
 			on:click={() => handleClick('complexity')}
 		/>
 		<SectionButton
+			label={'Change game length'}
 			color={COLORS.FILTER.GAME_LENGTH}
 			on:click={() => handleClick('game_length')}
 			icon={'fa-clock'}

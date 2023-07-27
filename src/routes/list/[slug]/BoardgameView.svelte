@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
 	import Title from '../../../components/typography/Title.svelte'
 	import type { Boardgame } from '../../../types/boardgames'
 	import BoardgameImage from './BoardgameImage.svelte'

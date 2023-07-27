@@ -13,6 +13,7 @@
 	color={COLORS.FILTER.PLAYER_COUNT}
 	selected={$playerCountStore === index}
 	on:click={() => update(index)}
+	label={`Set player count to ${index}`}
 >
 	<IconText>{formatPlayerCount(index)}</IconText>
 </RoundButton>

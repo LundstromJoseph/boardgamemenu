@@ -5,11 +5,19 @@
 	export let selected = false
 	export let color: string = COLORS.TEXT_COLOR
 	export let type: HTMLButtonElement['type'] = 'button'
+	export let label: string
 
 	$: classes = selected ? 'button selected-button' : 'button'
 </script>
 
-<button {type} class={classes} style="background-color: {color};" bind:this={el} on:click>
+<button
+	aria-label={label}
+	{type}
+	class={classes}
+	style="background-color: {color};"
+	bind:this={el}
+	on:click
+>
 	<slot />
 </button>
 
