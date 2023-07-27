@@ -21,7 +21,7 @@ test.afterEach(async ({ page }, testInfo) => {
 	}
 })
 
-test('load games', async ({ page }) => {
+test('Load games', async ({ page }) => {
 	await page.route(/.*boardgamegeek.*collection.*/, async (route) => {
 		await route.fulfill({ body: collectionData, contentType: 'text/xml' })
 	})
@@ -32,4 +32,26 @@ test('load games', async ({ page }) => {
 
 	await page.goto('/list/testuser', { waitUntil: 'networkidle' })
 	await expect(page.getByText('CODENAMES')).toBeVisible()
+})
+
+test('Change player amount', async ({ page }) => {
+	await page.route(/.*boardgamegeek.*collection.*/, async (route) => {
+		await route.fulfill({ body: collectionData, contentType: 'text/xml' })
+	})
+
+	await page.route(/.*boardgamegeek.*thing.*/, async (route) => {
+		await route.fulfill({ body: boardgamesData, contentType: 'text/xml' })
+	})
+
+	await page.goto('/list/testuser', { waitUntil: 'networkidle' })
+	await expect(page.getByText('CODENAMES')).toBeVisible()
+
+	await page.getByLabel('Change player count', { exact: true }).click()
+
+	await expect(page.getByLabel('Set player count to 1', { exact: true })).toBeVisible()
+
+	await page.getByLabel('Set player count to 1', { exact: true }).click()
+
+	await expect(page.getByText('CODENAMES')).not.toBeVisible()
+	await expect(page.getByText('WINGSPAN')).toBeVisible()
 })
