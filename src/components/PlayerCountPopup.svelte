@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { HIGHEST_PLAYER_COUNT } from '../fn/playerCount'
-	import { playerCountStore } from '../store/filters'
+	import { HIGHEST_PLAYER_COUNT, playerCount } from '../store/playerCount'
 	import FilterPopup from './FilterPopup.svelte'
 	import PlayerCountButton from './PlayerCountButton.svelte'
 	import Title from './typography/Title.svelte'
@@ -8,7 +7,7 @@
 	const array = Array.from(Array(HIGHEST_PLAYER_COUNT + 1).keys())
 
 	const update = (count: number) => {
-		playerCountStore.set(count)
+		playerCount.set(count)
 	}
 </script>
 

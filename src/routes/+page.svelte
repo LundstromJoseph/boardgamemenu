@@ -50,7 +50,9 @@
 			{/if}
 			<div in:fade={{ delay: delay * 3, duration: duration + delay * 0 }}>
 				<div class="button-wrapper">
-					<RoundButton type="submit"><i class="fa-solid fa-arrow-right fa-xl" /></RoundButton>
+					<RoundButton label="submit-username" type="submit"
+						><i class="fa-solid fa-arrow-right fa-xl" /></RoundButton
+					>
 				</div>
 			</div>
 		</div>

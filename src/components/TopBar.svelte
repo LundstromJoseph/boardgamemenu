@@ -5,15 +5,12 @@
 	import TransparentButton from './TransparentButton.svelte'
 	import Title from './typography/Title.svelte'
 
-	export let userId: string
-	export let boardgameCount: number
-
 	const handleReload = () => {
 		boardgameStore.set({
 			userId: undefined,
 			boardgames: []
 		})
-		goto(`/list/${userId}`, { invalidateAll: true })
+		goto(`/list/${$boardgameStore.userId}`, { invalidateAll: true })
 	}
 
 	const handleLogout = () => {
@@ -23,8 +20,9 @@
 		})
 		goto('/')
 	}
+	$: boardgameCount = $boardgameStore.boardgames.length
 
-	$: text = userId + (boardgameCount ? ` (${boardgameCount} games)` : '')
+	$: text = $boardgameStore.userId + (boardgameCount ? ` (${boardgameCount} games)` : '')
 </script>
 
 <div class="top-bar" style="--height: {TOP_BAR_HEIGHT}px;">

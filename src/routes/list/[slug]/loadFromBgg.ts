@@ -47,7 +47,6 @@ const loadBoardgames = async (ids: string[]): Promise<Boardgames> => {
 
 const loadCollection = async (userId: string): Promise<Collection> => {
 	const [status, response] = await promise(collectionUrl(userId))
-	//const [status, response] = [200, MOCK_RESPONSE]
 	if (status === ACCEPTED) {
 		await new Promise((res) => setTimeout(res, 500))
 		return loadCollection(userId)

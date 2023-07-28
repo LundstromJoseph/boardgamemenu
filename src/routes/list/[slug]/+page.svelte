@@ -11,8 +11,8 @@
 
 {#await boardgames}
 	<Loading userId={data.userId} />
-{:then loadedData}
-	<BoardgameList userId={loadedData.userId} items={loadedData.boardgames} />
-{:catch error}
+{:then}
+	<BoardgameList />
+{:catch}
 	<Error userId={data.userId} />
 {/await}

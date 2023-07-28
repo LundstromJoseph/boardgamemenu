@@ -1,35 +1,46 @@
 <script lang="ts">
 	import {
-		complexityRangeToNormalized,
-		normalizedRangeToComplexity,
-		weightToText
-	} from '../fn/complexity'
-	import { complexityStore } from '../store/filters'
+		complexity,
+		complexityDescription,
+		HIGHEST_COMPLEXITY,
+		LOWEST_COMPLEXITY
+	} from '../store/complexity'
 	import { COLORS } from '../theme/colors'
+	import type { Range } from '../types/boardgames'
 	import FilterPopup from './FilterPopup.svelte'
 	import TwoPointSlider from './TwoPointSlider.svelte'
 	import Title from './typography/Title.svelte'
 
-	let range = complexityRangeToNormalized($complexityStore)
-	$: complexity = normalizedRangeToComplexity(range)
+	let range: Range = [LOWEST_COMPLEXITY, HIGHEST_COMPLEXITY]
 
-	function save() {
-		complexityStore.set(complexity)
+	const description = (value: number) => {
+		return `${complexityDescription(value)} (${value})`
+	}
+
+	function save(range: Range) {
+		complexity.set(range)
 	}
 </script>
 
 <FilterPopup>
 	<Title slot="title">Complexity</Title>
 	<div slot="options" class="slider-container">
-		<TwoPointSlider bind:range onEnd={save} accentColor={COLORS.FILTER.COMPLEXITY} />
+		<TwoPointSlider
+			min={LOWEST_COMPLEXITY}
+			max={HIGHEST_COMPLEXITY}
+			stepSize={0.1}
+			onEnd={save}
+			bind:range
+			accentColor={COLORS.FILTER.COMPLEXITY}
+		/>
 		<div style="flex-grow: 1;">
-			<Title align="end">{`${weightToText(complexity[0])} (${complexity[0]})`}</Title>
+			<Title align="end">{description(range[0])}</Title>
 		</div>
 		<div>
 			<Title>-</Title>
 		</div>
 		<div style="flex-grow: 1;">
-			<Title align="start">{`${weightToText(complexity[1])} (${complexity[1]})`}</Title>
+			<Title align="start">{description(range[1])}</Title>
 		</div>
 	</div>
 </FilterPopup>

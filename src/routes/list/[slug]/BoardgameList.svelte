@@ -1,32 +1,18 @@
 <script lang="ts">
 	import BottomBar from '../../../components/BottomBar.svelte'
 	import TopBar from '../../../components/TopBar.svelte'
-	import { filter } from '../../../fn/filters'
-	import { complexityStore, gameLengthStore, playerCountStore } from '../../../store/filters'
+	import { filteredBoardgames } from '../../../store/filteredBoardgames'
 	import { BOTTOM_BAR_HEIGHT, TOP_BAR_HEIGHT } from '../../../theme/sizes'
-	import type { Boardgame } from '../../../types/boardgames'
 	import BoardgameView from './BoardgameView.svelte'
-
-	export let items: Boardgame[]
-	export let userId: string
-
-	$: boardgames = filter(
-		{
-			complexity: $complexityStore,
-			gameLength: $gameLengthStore,
-			playerCount: $playerCountStore
-		},
-		items
-	)
 </script>
 
-<TopBar {userId} boardgameCount={items.length} />
+<TopBar />
 <BottomBar />
 <div
 	class="result-container"
 	style="--bottom-bar-height: {BOTTOM_BAR_HEIGHT}px; --top-bar-height: {TOP_BAR_HEIGHT}px"
 >
-	{#each boardgames as item}
+	{#each $filteredBoardgames as item}
 		<BoardgameView {item} />
 	{/each}
 </div>

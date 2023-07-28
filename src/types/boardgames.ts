@@ -8,3 +8,5 @@ export type Boardgame = {
 		gameLength: number
 	}
 }
+
+export type Range = readonly [number, number]

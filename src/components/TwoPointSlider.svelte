@@ -1,13 +1,22 @@
 <script lang="ts">
 	import { COLORS } from '../theme/colors'
+	import type { Range } from '../types/boardgames'
 
 	export let min = 0
-	export let max = 1
-	export let range: readonly [number, number] = [min, max]
-	export let onEnd: () => void = () => undefined
+	export let max = 10
+	export let stepSize = 1
+	export let range: Range = [min, max]
+	export let onEnd: (range: Range) => void = () => undefined
 	export let accentColor: string = COLORS.TEXT_COLOR
+
+	$: roundValue = 1.0 / stepSize
+
 	let fill: HTMLDivElement
 	let slider: HTMLDivElement
+
+	const toPercentage = (value: number) => {
+		return (value - min) / (max - min)
+	}
 
 	function calculateNewValues(variant: 'left' | 'right', clientX: number) {
 		const sliderRect = slider?.getBoundingClientRect()
@@ -17,11 +26,14 @@
 			const sliderEnd = sliderRect.left + sliderRect.width
 
 			const percentageMoved = (clientX - sliderStart) / (sliderEnd - sliderStart)
+
+			const newValue = Math.round(percentageMoved * (max - min) * roundValue) / roundValue
+
 			if (variant === 'left') {
-				range = [clamp(percentageMoved, min, range[1] - (max - min) * 0.1), range[1]]
+				range = [clamp(newValue, min, range[1] - (max - min) * 0.1), range[1]]
 			}
 			if (variant === 'right') {
-				range = [range[0], clamp(percentageMoved, range[0] + (max - min) * 0.1, max)]
+				range = [range[0], clamp(newValue, range[0] + (max - min) * 0.1, max)]
 			}
 		}
 	}
@@ -33,7 +45,7 @@
 			}
 
 			const mouseUpListener = () => {
-				onEnd()
+				onEnd(range)
 				window.removeEventListener('mousemove', mouseMoveListener)
 				window.removeEventListener('mouseup', mouseUpListener)
 			}
@@ -64,8 +76,8 @@
 			class="fill"
 			bind:this={fill}
 			style="
-        left: {100 * range[0]}%;
-        right: {100 * (1 - range[1])}%;
+        left: {100 * toPercentage(range[0])}%;
+        right: {100 * (1 - toPercentage(range[1]))}%;
 				--background-color: {accentColor};
       "
 		/>
@@ -73,9 +85,9 @@
 			class="handle"
 			on:mousedown|preventDefault|stopPropagation={onMouseDown('left')}
 			on:touchmove|preventDefault|stopPropagation={onTouchMove('left')}
-			on:touchend|preventDefault|stopPropagation={onEnd}
+			on:touchend|preventDefault|stopPropagation={() => onEnd(range)}
 			style="
-        left: {100 * range[0]}%;
+        left: {100 * toPercentage(range[0])}%;
 				--background-color: {COLORS.SURFACE};
 				--border-color: {COLORS.CONTROL_COLOR};
       "
@@ -83,13 +95,13 @@
 		<div
 			class="handle"
 			style="
-        left: {100 * range[1]}%;
+        left: {100 * toPercentage(range[1])}%;
 				--background-color: {COLORS.SURFACE};
 				--border-color: {COLORS.CONTROL_COLOR};
       "
 			on:mousedown|preventDefault|stopPropagation={onMouseDown('right')}
 			on:touchmove|preventDefault|stopPropagation={onTouchMove('right')}
-			on:touchend|preventDefault|stopPropagation={onEnd}
+			on:touchend|preventDefault|stopPropagation={() => onEnd(range)}
 		/>
 	</div>
 </div>

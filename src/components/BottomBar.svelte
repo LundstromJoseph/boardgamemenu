@@ -1,9 +1,8 @@
 <script lang="ts">
 	import { clickOutside } from '../directive/clickOutside'
-	import { formatComplexityRange } from '../fn/complexity'
-	import { formatGameLengthRange } from '../fn/gameLength'
-	import { formatPlayerCount } from '../fn/playerCount'
-	import { playerCountStore, complexityStore, gameLengthStore } from '../store/filters'
+	import { complexity, formatComplexityForBottomBar } from '../store/complexity'
+	import { formatGameLengthForBottomBar, gameLength } from '../store/gameLength'
+	import { formatPlayerCountForBottomBar, playerCount } from '../store/playerCount'
 	import { COLORS } from '../theme/colors'
 	import { BOTTOM_BAR_HEIGHT } from '../theme/sizes'
 	import ComplexityPopup from './ComplexityPopup.svelte'
@@ -47,13 +46,13 @@
 			color={COLORS.FILTER.PLAYER_COUNT}
 			on:click={() => handleClick('player_count')}
 			icon="fa-users"
-			text={formatPlayerCount($playerCountStore)}
+			text={formatPlayerCountForBottomBar($playerCount)}
 		/>
 		<SectionButton
 			label={'Change complexity'}
 			color={COLORS.FILTER.COMPLEXITY}
 			icon={'fa-calculator'}
-			text={formatComplexityRange($complexityStore)}
+			text={formatComplexityForBottomBar($complexity)}
 			on:click={() => handleClick('complexity')}
 		/>
 		<SectionButton
@@ -61,7 +60,7 @@
 			color={COLORS.FILTER.GAME_LENGTH}
 			on:click={() => handleClick('game_length')}
 			icon={'fa-clock'}
-			text={formatGameLengthRange($gameLengthStore)}
+			text={formatGameLengthForBottomBar($gameLength)}
 		/>
 	</div>
 </div>
