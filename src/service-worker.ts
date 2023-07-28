@@ -5,7 +5,7 @@
 /// <reference lib="webworker" />
 import { build, files, version } from '$service-worker'
 
-const APP_VERSION = 1.2
+const APP_VERSION = 1.3
 
 const sw = self as unknown as ServiceWorkerGlobalScope
 

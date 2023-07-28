@@ -1,16 +1,18 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
+	import { get } from 'svelte/store'
 	import { boardgameStore } from '../store/boardgames'
 	import { TOP_BAR_HEIGHT } from '../theme/sizes'
 	import TransparentButton from './TransparentButton.svelte'
 	import Title from './typography/Title.svelte'
 
 	const handleReload = () => {
+		const userId = get(boardgameStore).userId
 		boardgameStore.set({
 			userId: undefined,
 			boardgames: []
 		})
-		goto(`/list/${$boardgameStore.userId}`, { invalidateAll: true })
+		goto(`/list/${userId}`, { invalidateAll: true })
 	}
 
 	const handleLogout = () => {
