@@ -11,7 +11,7 @@
 	import TwoPointSlider from './TwoPointSlider.svelte'
 	import Title from './typography/Title.svelte'
 
-	let range: Range = [LOWEST_COMPLEXITY, HIGHEST_COMPLEXITY]
+	let range: Range = [$complexity[0], $complexity[1]]
 
 	const description = (value: number) => {
 		return `${complexityDescription(value)} (${value})`
