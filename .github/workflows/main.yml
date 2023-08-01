@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Build and deploy main branch
 
 on:
   push:
@@ -21,10 +21,24 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
-      - run: npm run test:unit
-      - run: npx playwright install --with-deps
-      - run: npm run test
+      - name: install
+        run: npm ci
+      - name: unit tests
+        run: npm run test:unit
+      - name: install playwright
+        run: npx playwright install --with-deps
+      - name: run playwright tests
+        run: npm run test
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
       - name: Pull Vercel Environment Information
         run: npx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
       - name: Build Project Artifacts
