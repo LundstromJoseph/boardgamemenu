@@ -21,7 +21,8 @@
 	.result-container {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
-		gap: 0.3em;
+		row-gap: 1em;
+		column-gap: 0.3em;
 		padding-bottom: var(--bottom-bar-height);
 		padding-top: var(--top-bar-height);
 	}

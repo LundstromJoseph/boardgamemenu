@@ -51,11 +51,8 @@
 	}
 
 	.title-container {
-		position: absolute;
-		background-color: rgba(0, 0, 0, 0.8);
-	}
-
-	.title-container {
 		text-align: center;
+		border-radius: 20px;
+		z-index: -1;
 	}
 </style>

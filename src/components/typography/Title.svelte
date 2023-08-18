@@ -11,10 +11,13 @@
 	.text {
 		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 		font-weight: 500;
-		font-size: medium;
+		font-size: small;
 		margin: 0.5em;
 		text-align: var(--align);
 		color: var(--color);
 		text-transform: uppercase;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		overflow: hidden;
 	}
 </style>
