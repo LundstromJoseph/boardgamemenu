@@ -90,6 +90,12 @@ const prepareStats = async (ids: string[]): Promise<Record<string, Boardgame['st
 	return stats
 }
 
+const decodeHtml = (html: string) => {
+	const txt = document.createElement('textarea')
+	txt.innerHTML = html
+	return txt.value
+}
+
 export async function loadFromBgg(userId: string): Promise<{ boardgames: Boardgame[] }> {
 	const collection = await loadCollection(userId)
 	if (!collection) {
@@ -101,7 +107,7 @@ export async function loadFromBgg(userId: string): Promise<{ boardgames: Boardga
 	return {
 		boardgames: collection.items.item.map((it) => ({
 			image: it.image,
-			name: it.name['_@ttribute'],
+			name: decodeHtml(it.name['_@ttribute']),
 			stats: stats[it.objectid]
 		}))
 	}
