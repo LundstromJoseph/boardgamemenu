@@ -9,15 +9,13 @@
 	let show = false
 </script>
 
-<div class="boardgame" class:show>
-	<div>
+<div class="boardgame">
+	<div class:show>
 		<BoardgameImage bind:width bind:show {item} />
 	</div>
-	{#if show}
-		<div class="title-container" style="width: {width}px">
-			<Title align={'center'}>{item.name}</Title>
-		</div>
-	{/if}
+	<div class="title-container" style="width: {width}px">
+		<Title align={'center'}>{item.name}</Title>
+	</div>
 </div>
 
 <style>
@@ -41,10 +39,9 @@
 		justify-content: center;
 		align-items: center;
 		width: 100%;
-		opacity: 0;
 	}
 
-	.boardgame.show {
+	.show {
 		animation-duration: 1s;
 		animation-name: fadeIn;
 		opacity: 1;
