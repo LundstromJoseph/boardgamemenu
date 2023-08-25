@@ -40,5 +40,7 @@
 	.slider-container {
 		display: flex;
 		flex-wrap: wrap;
+		padding-left: 2rem;
+		padding-right: 2rem;
 	}
 </style>
