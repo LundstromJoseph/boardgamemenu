@@ -9,10 +9,21 @@
 	export let onEnd: (range: Range) => void = () => undefined
 	export let accentColor: string = COLORS.TEXT_COLOR
 
-	$: roundValue = 1.0 / stepSize
+	$: decimals = precision(stepSize)
 
 	let fill: HTMLDivElement
 	let slider: HTMLDivElement
+
+	function precision(a: number) {
+		if (!isFinite(a)) return 0
+		var e = 1,
+			p = 0
+		while (Math.round(a * e) / e !== a) {
+			e *= 10
+			p++
+		}
+		return p
+	}
 
 	const toPercentage = (value: number) => {
 		return (value - min) / (max - min)
@@ -27,13 +38,16 @@
 
 			const percentageMoved = (clientX - sliderStart) / (sliderEnd - sliderStart)
 
-			const newValue = Math.round(percentageMoved * (max - min) * roundValue) / roundValue
+			const target = min + (max - min) * percentageMoved
+			const newValue = Number((Math.round(target / stepSize) * stepSize).toFixed(decimals))
 
 			if (variant === 'left') {
-				range = [clamp(newValue, min, range[1] - (max - min) * 0.1), range[1]]
+				const clampedValue = clamp(newValue, min, max)
+				range = [clamp(newValue, min, max), Math.max(clampedValue, range[1])]
 			}
 			if (variant === 'right') {
-				range = [range[0], clamp(newValue, range[0] + (max - min) * 0.1, max)]
+				const clampedValue = clamp(newValue, min, max)
+				range = [Math.min(range[0], clampedValue), clamp(newValue, min, max)]
 			}
 		}
 	}
