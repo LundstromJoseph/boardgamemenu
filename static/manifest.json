@@ -1,6 +1,6 @@
 {
-	"short_name": "BGP",
-	"name": "Boardgame picker",
+	"short_name": "BGMenu",
+	"name": "Boardgame Menu",
 	"start_url": "/",
 	"icons": [
 		{

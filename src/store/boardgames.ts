@@ -2,7 +2,7 @@ import { browser } from '$app/environment'
 import { writable } from 'svelte/store'
 import type { Boardgame } from '../types/boardgames'
 
-const BOARDGAMES_KEY = 'boardgamepickerstore'
+const BOARDGAMES_KEY = 'boardgame_menu_store'
 
 export const boardgameStore = writable<{
 	userId: string | undefined
