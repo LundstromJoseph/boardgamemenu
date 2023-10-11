@@ -1,12 +1,10 @@
 <script lang="ts">
 	import BottomBar from '../../../components/BottomBar.svelte'
-	import TopBar from '../../../components/TopBar.svelte'
 	import { filteredBoardgames } from '../../../store/filteredBoardgames'
 	import { BOTTOM_BAR_HEIGHT, TOP_BAR_HEIGHT } from '../../../theme/sizes'
 	import BoardgameView from './BoardgameView.svelte'
 </script>
 
-<TopBar />
 <BottomBar />
 <div
 	class="result-container"
@@ -24,7 +22,6 @@
 		row-gap: 1em;
 		column-gap: 0.3em;
 		padding-bottom: var(--bottom-bar-height);
-		padding-top: var(--top-bar-height);
 	}
 
 	@media (min-width: 800px) {

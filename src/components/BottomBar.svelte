@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { clickOutside } from '../directive/clickOutside'
+	import Fab from '../routes/list/[slug]/Fab.svelte'
 	import { complexity, formatComplexityForBottomBar } from '../store/complexity'
 	import { formatGameLengthForBottomBar, gameLength } from '../store/gameLength'
 	import { formatPlayerCountForBottomBar, playerCount } from '../store/playerCount'
 	import { COLORS } from '../theme/colors'
 	import { BOTTOM_BAR_HEIGHT } from '../theme/sizes'
 	import ComplexityPopup from './ComplexityPopup.svelte'
+	import FilterMenu from './FilterMenu/FilterMenu.svelte'
 	import GameLengthPopup from './GameLengthPopup.svelte'
 	import PlayerCountPopup from './PlayerCountPopup.svelte'
 	import SectionButton from './SectionButton.svelte'
@@ -27,12 +28,12 @@
 	}
 </script>
 
-<div
-	class="bottom-bar"
-	style="--height: {BOTTOM_BAR_HEIGHT}px;"
-	use:clickOutside
-	on:outsideClicked={onClickOutside}
->
+<Fab onClick={() => handleClick('player_count')} />
+{#if 'player_count' === setting}
+	<FilterMenu />
+{/if}
+
+<div class="bottom-bar" style="--height: {BOTTOM_BAR_HEIGHT}px; display: none;">
 	<div class="content">
 		{#if 'player_count' === setting}
 			<PlayerCountPopup />
