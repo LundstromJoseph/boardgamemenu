@@ -2,7 +2,7 @@
 	export let onClick = () => {}
 </script>
 
-<button class="fab" on:mousedown|preventDefault|stopPropagation={onClick}>
+<button class="fab" aria-label="filters-menu" on:mousedown|preventDefault|stopPropagation={onClick}>
 	<i class="fa-solid fa-bars fa-lg" />
 </button>
 
