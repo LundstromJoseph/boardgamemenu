@@ -1,15 +1,12 @@
 <script lang="ts">
 	import BottomBar from '../../../components/BottomBar.svelte'
 	import { filteredBoardgames } from '../../../store/filteredBoardgames'
-	import { BOTTOM_BAR_HEIGHT, TOP_BAR_HEIGHT } from '../../../theme/sizes'
+	import { BOTTOM_BAR_HEIGHT } from '../../../theme/sizes'
 	import BoardgameView from './BoardgameView.svelte'
 </script>
 
 <BottomBar />
-<div
-	class="result-container"
-	style="--bottom-bar-height: {BOTTOM_BAR_HEIGHT}px; --top-bar-height: {TOP_BAR_HEIGHT}px"
->
+<div class="result-container" style="--bottom-bar-height: {BOTTOM_BAR_HEIGHT}px;">
 	{#each $filteredBoardgames as item}
 		<BoardgameView {item} />
 	{/each}

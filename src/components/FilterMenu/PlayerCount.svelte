@@ -3,10 +3,14 @@
 	import PlayerCountButton from '../PlayerCountButton.svelte'
 	import Title from '../typography/Title.svelte'
 
-	const array = Array.from(Array(HIGHEST_PLAYER_COUNT + 1).keys())
+	const array = Array.from(Array(HIGHEST_PLAYER_COUNT).keys())
 
 	const update = (count: number) => {
-		playerCount.set(count)
+		if ($playerCount == count) {
+			playerCount.set(0)
+		} else {
+			playerCount.set(count)
+		}
 	}
 </script>
 
@@ -15,7 +19,7 @@
 	<div class="options">
 		{#each array as index}
 			<div style="min-width: 55px;">
-				<PlayerCountButton {index} {update} />
+				<PlayerCountButton index={index + 1} {update} />
 			</div>
 		{/each}
 	</div>

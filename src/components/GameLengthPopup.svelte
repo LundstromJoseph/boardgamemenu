@@ -15,7 +15,7 @@
 </script>
 
 <FilterPopup>
-	<Title slot="title" color={COLORS.ON_SURFACE}>Gamelength</Title>
+	<Title slot="title" color={COLORS.ON_SURFACE_TEXT}>Gamelength</Title>
 	<div class="slider-container" slot="options">
 		<TwoPointSlider
 			min={LOWEST_STEP}
@@ -27,11 +27,11 @@
 		/>
 
 		<div style="flex-grow: 1;">
-			<Title align="end" color={COLORS.ON_SURFACE}>{formatMinutes(range[0])}</Title>
+			<Title align="end" color={COLORS.ON_SURFACE_TEXT}>{formatMinutes(range[0])}</Title>
 		</div>
-		<Title color={COLORS.ON_SURFACE}>-</Title>
+		<Title color={COLORS.ON_SURFACE_TEXT}>-</Title>
 		<div style="flex-grow: 1;">
-			<Title align="start" color={COLORS.ON_SURFACE}>{formatMinutes(range[1])}</Title>
+			<Title align="start" color={COLORS.ON_SURFACE_TEXT}>{formatMinutes(range[1])}</Title>
 		</div>
 	</div>
 </FilterPopup>

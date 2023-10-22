@@ -4,13 +4,29 @@
 	import GameLength from './GameLength.svelte'
 	import Complexity from './Complexity.svelte'
 	import PlayerCount from './PlayerCount.svelte'
+	import { COLORS } from '../../theme/colors'
+	import { clickOutside } from '../../directive/clickOutside'
+	import Title from '../typography/Title.svelte'
+
+	export let onOutsideClicked: () => void
 </script>
 
-<div class="container" style="--bottom-bar-height: {BOTTOM_BAR_HEIGHT}px;" in:scale out:scale>
+<div
+	class="container"
+	style="bottom: {BOTTOM_BAR_HEIGHT}px; background-color: {COLORS.SURFACE}"
+	in:scale
+	out:scale
+	use:clickOutside
+	on:outsideClicked={onOutsideClicked}>
 	<div class="content">
 		<PlayerCount />
 		<Complexity />
 		<GameLength />
+		<div>
+			<Title style="font-size: x-small;">
+				Data supplied by <a style="color: white;" href="https://boardgamegeek.com" target="_blank"> boardgamegeek.com</a>
+			</Title>
+		</div>
 	</div>
 </div>
 
@@ -25,8 +41,6 @@
 		transform: translateX(-50%);
 		z-index: 95;
 		transform-origin: 50% 100%;
-		bottom: 30px;
-		background-color: rgba(0, 0, 0, 0.7);
 		backdrop-filter: blur(4px);
 		padding-bottom: 32px;
 	}

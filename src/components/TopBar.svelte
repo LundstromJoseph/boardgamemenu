@@ -2,7 +2,6 @@
 	import { goto } from '$app/navigation'
 	import { get } from 'svelte/store'
 	import { boardgameStore } from '../store/boardgames'
-	import { TOP_BAR_HEIGHT } from '../theme/sizes'
 	import TransparentButton from './TransparentButton.svelte'
 	import Title from './typography/Title.svelte'
 
@@ -27,7 +26,7 @@
 	$: text = $boardgameStore.userId + (boardgameCount ? ` (${boardgameCount} games)` : '')
 </script>
 
-<div class="top-bar" style="--height: {TOP_BAR_HEIGHT}px;">
+<div class="top-bar" style="--height: {0}px;">
 	<div class="content">
 		<Title>{text}</Title>
 		<div class="icons">
