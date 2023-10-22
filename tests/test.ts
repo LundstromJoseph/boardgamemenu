@@ -46,7 +46,7 @@ test('Change player amount', async ({ page }) => {
 	await page.goto('/list/testuser', { waitUntil: 'networkidle' })
 	await expect(page.getByText('CODENAMES')).toBeVisible()
 
-	await page.getByLabel('Change player count', { exact: true }).click()
+	await page.getByLabel('filters-menu', { exact: true }).click()
 
 	await expect(page.getByLabel('Set player count to 1', { exact: true })).toBeVisible()
 

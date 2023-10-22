@@ -1,88 +1,54 @@
 <script lang="ts">
-	import { clickOutside } from '../directive/clickOutside'
-	import { complexity, formatComplexityForBottomBar } from '../store/complexity'
-	import { formatGameLengthForBottomBar, gameLength } from '../store/gameLength'
-	import { formatPlayerCountForBottomBar, playerCount } from '../store/playerCount'
+	import { boardgameStore } from '../store/boardgames'
+	import { filteredBoardgames } from '../store/filteredBoardgames'
 	import { COLORS } from '../theme/colors'
-	import { BOTTOM_BAR_HEIGHT } from '../theme/sizes'
-	import ComplexityPopup from './ComplexityPopup.svelte'
-	import GameLengthPopup from './GameLengthPopup.svelte'
-	import PlayerCountPopup from './PlayerCountPopup.svelte'
-	import SectionButton from './SectionButton.svelte'
+	import FilterMenu from './FilterMenu/FilterMenu.svelte'
+	import FilterMenuButton from './FilterMenu/FilterMenuButton.svelte'
+	import Title from './typography/Title.svelte'
 
-	type Setting = undefined | 'player_count' | 'complexity' | 'game_length'
+	let menuOpen: boolean = false
 
-	let setting: Setting
+	$: boardgameCount = $boardgameStore.boardgames.length
 
-	function handleClick(newValue: typeof setting) {
-		if (!newValue || setting === newValue) {
-			setting = undefined
-		} else {
-			setting = newValue
-		}
-	}
+	$: filteredCount = $filteredBoardgames.length
 
-	function onClickOutside() {
-		setting = undefined
+	$: text = boardgameCount ? `${filteredCount}/${boardgameCount} games visible` : ''
+
+	const onOutsideClicked = () => {
+		menuOpen = false
 	}
 </script>
 
-<div
-	class="bottom-bar"
-	style="--height: {BOTTOM_BAR_HEIGHT}px;"
-	use:clickOutside
-	on:outsideClicked={onClickOutside}
->
+<div class="bottom-bar" style="background-color: {COLORS.SURFACE};">
 	<div class="content">
-		{#if 'player_count' === setting}
-			<PlayerCountPopup />
-		{:else if 'complexity' === setting}
-			<ComplexityPopup />
-		{:else if 'game_length' === setting}
-			<GameLengthPopup />
-		{/if}
-		<SectionButton
-			label={'Change player count'}
-			color={COLORS.FILTER.PLAYER_COUNT}
-			on:click={() => handleClick('player_count')}
-			icon="fa-users"
-			text={formatPlayerCountForBottomBar($playerCount)}
-		/>
-		<SectionButton
-			label={'Change complexity'}
-			color={COLORS.FILTER.COMPLEXITY}
-			icon={'fa-calculator'}
-			text={formatComplexityForBottomBar($complexity)}
-			on:click={() => handleClick('complexity')}
-		/>
-		<SectionButton
-			label={'Change game length'}
-			color={COLORS.FILTER.GAME_LENGTH}
-			on:click={() => handleClick('game_length')}
-			icon={'fa-clock'}
-			text={formatGameLengthForBottomBar($gameLength)}
-		/>
+		<Title>{$boardgameStore.userId}</Title>
+		<Title>{text}</Title>
 	</div>
 </div>
+<FilterMenuButton onClick={() => (menuOpen = !menuOpen)} />
+{#if menuOpen}
+	<FilterMenu {onOutsideClicked} />
+{/if}
 
 <style>
 	.bottom-bar {
 		position: fixed;
 		bottom: 0;
-		background-color: black;
+		backdrop-filter: blur(4px);
 		left: 0;
-		height: var(--height);
+		height: 30px;
 		width: 100%;
-		z-index: 99;
+		z-index: 90;
 		transform-origin: 50% 0%;
-		border-top: 1px solid white;
 	}
 
 	.content {
 		display: flex;
 		align-items: center;
-		justify-content: space-evenly;
+		justify-content: space-between;
 		height: 100%;
 		z-index: 97;
+		padding-left: 6px;
+		padding-right: 6px;
 	}
 </style>

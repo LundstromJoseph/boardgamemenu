@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store'
 
-export const HIGHEST_PLAYER_COUNT = 19
+export const HIGHEST_PLAYER_COUNT = 20
 
 export const playerCount = writable<number>(0)
 

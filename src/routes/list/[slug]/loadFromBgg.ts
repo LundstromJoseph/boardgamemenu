@@ -7,13 +7,10 @@ import type { Boardgame } from '../../../types/boardgames'
 const ACCEPTED = 202
 const OK = 200
 
-const collectionUrl = (userId: string) =>
-	`https://boardgamegeek.com/xmlapi2/collection?username=${userId}&own=1`
+const collectionUrl = (userId: string) => `https://boardgamegeek.com/xmlapi2/collection?username=${userId}&own=1`
 
 const boardgamesUrl = (ids: string[]) =>
-	`https://boardgamegeek.com/xmlapi2/thing?type=boardgame,boardgameexpansion,boardgameaccessory&stats=1&id=${ids.join(
-		','
-	)}`
+	`https://boardgamegeek.com/xmlapi2/thing?type=boardgame,boardgameexpansion,boardgameaccessory&stats=1&id=${ids.join(',')}`
 
 const promise = async (url: string): Promise<readonly [number, string]> => {
 	return fetch(url).then(async (e) => [e.status, await e.text()] as const)
@@ -47,6 +44,7 @@ const loadBoardgames = async (ids: string[]): Promise<Boardgames> => {
 
 const loadCollection = async (userId: string): Promise<Collection> => {
 	const [status, response] = await promise(collectionUrl(userId))
+	console.log(response)
 	if (status === ACCEPTED) {
 		await new Promise((res) => setTimeout(res, 500))
 		return loadCollection(userId)

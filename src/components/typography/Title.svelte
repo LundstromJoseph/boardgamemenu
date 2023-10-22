@@ -3,9 +3,10 @@
 
 	export let color: string = COLORS.TEXT_COLOR
 	export let align: 'start' | 'center' | 'end' = 'start'
+	export let style: string = ''
 </script>
 
-<p class="text" style="--color: {color}; --align: {align}"><slot /></p>
+<p class="text" style="--color: {color}; --align: {align}; {style}"><slot /></p>
 
 <style>
 	.text {

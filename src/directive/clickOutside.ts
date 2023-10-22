@@ -10,6 +10,8 @@ export function clickOutside(node: HTMLElement) {
 			return
 		}
 		node.dispatchEvent(new CustomEvent<HTMLElement>('outsideClicked', { detail: node }))
+		event.preventDefault()
+		event.stopImmediatePropagation()
 	}
 
 	document.addEventListener('touchstart', handle, true)

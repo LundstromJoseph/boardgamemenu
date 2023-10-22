@@ -85,7 +85,7 @@
 </script>
 
 <div class="container">
-	<div class="slider" style="--background-color: {COLORS.CONTROL_COLOR}" bind:this={slider}>
+	<div class="slider" style="--background-color: {COLORS.ON_SURFACE_BACKGROUND}" bind:this={slider}>
 		<div
 			class="fill"
 			bind:this={fill}
@@ -102,16 +102,16 @@
 			on:touchend|preventDefault|stopPropagation={() => onEnd(range)}
 			style="
         left: {100 * toPercentage(range[0])}%;
-				--background-color: {COLORS.SURFACE};
-				--border-color: {COLORS.CONTROL_COLOR};
+				--background-color: {COLORS.ON_SURFACE_BUTTON};
+				--border-color: {COLORS.ON_SURFACE_BACKGROUND};
       "
 		/>
 		<div
 			class="handle"
 			style="
         left: {100 * toPercentage(range[1])}%;
-				--background-color: {COLORS.SURFACE};
-				--border-color: {COLORS.CONTROL_COLOR};
+				--background-color: {COLORS.ON_SURFACE_BUTTON};
+				--border-color: {COLORS.ON_SURFACE_BACKGROUND};
       "
 			on:mousedown|preventDefault|stopPropagation={onMouseDown('right')}
 			on:touchmove|preventDefault|stopPropagation={onTouchMove('right')}
