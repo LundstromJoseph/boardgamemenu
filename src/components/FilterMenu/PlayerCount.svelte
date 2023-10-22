@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { HIGHEST_PLAYER_COUNT, playerCount } from '../../store/playerCount'
-	import PlayerCountButton from '../PlayerCountButton.svelte'
+	import PlayerCountButton from './PlayerCountButton.svelte'
 	import Title from '../typography/Title.svelte'
 
 	const array = Array.from(Array(HIGHEST_PLAYER_COUNT).keys())
