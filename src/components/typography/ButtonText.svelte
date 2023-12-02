@@ -7,7 +7,7 @@
 		font-size: smaller;
 		margin: 0.5em;
 		text-align: center;
-		color: #222;
+		color: #fff;
 		text-transform: uppercase;
 	}
 </style>

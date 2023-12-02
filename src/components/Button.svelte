@@ -8,7 +8,7 @@
 
 <button class="button" on:click style="--color: {color}">
 	<ButtonText><slot /></ButtonText>
-	<i class={icon} />
+	<i class={icon} style="color: white;" />
 </button>
 
 <style>

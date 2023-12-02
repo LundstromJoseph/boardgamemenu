@@ -7,8 +7,20 @@
 	import { COLORS } from '../../theme/colors'
 	import { clickOutside } from '../../directive/clickOutside'
 	import Title from '../typography/Title.svelte'
+	import Button from '../Button.svelte'
+	import { boardgameStore } from '../../store/boardgames'
+	import { goto } from '$app/navigation'
 
 	export let onOutsideClicked: () => void
+
+	const onReload = () => {
+		const userId = $boardgameStore.userId
+		boardgameStore.set({
+			userId: undefined,
+			boardgames: []
+		})
+		goto(`/list/${userId}`, { replaceState: true, invalidateAll: true })
+	}
 </script>
 
 <div
@@ -26,6 +38,11 @@
 			<Title style="font-size: x-small;">
 				Data supplied by <a style="color: white;" href="https://boardgamegeek.com" target="_blank"> boardgamegeek.com</a>
 			</Title>
+		</div>
+	</div>
+	<div style="display: flex; flex-grow: 1; justify-content: flex-end; padding-right: 12px">
+		<div>
+			<Button on:click={onReload} color={COLORS.ON_SURFACE_BACKGROUND} icon={'fa-solid fa-xl fa-rotate'}>Reload</Button>
 		</div>
 	</div>
 </div>
