@@ -21,7 +21,7 @@
 
 <div class="bottom-bar" style="background-color: {COLORS.SURFACE};">
 	<div class="content">
-		<Title>{$boardgameStore.userId}</Title>
+		<Title>{$boardgameStore.userId ?? ''}</Title>
 		<Title>{text}</Title>
 	</div>
 </div>
