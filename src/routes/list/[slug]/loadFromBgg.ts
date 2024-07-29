@@ -22,7 +22,7 @@ const parseResponse = <T>(text: string): T => {
 }
 
 const chunkBoardgameIds = (ids: string[]) => {
-	const chunkSize = 50
+	const chunkSize = 20
 	const idChunks: string[][] = []
 	for (let i = 0; i < ids.length; i += chunkSize) {
 		idChunks.push(ids.slice(i, i + chunkSize))
