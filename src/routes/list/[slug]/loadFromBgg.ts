@@ -38,7 +38,7 @@ const loadBoardgames = async (ids: string[]): Promise<Boardgames> => {
 	} else if (status === OK) {
 		return parseResponse(response)
 	} else {
-		throw error(status, 'Could not get boardgames for user')
+		error(status, 'Could not get boardgames for user');
 	}
 }
 
@@ -51,7 +51,7 @@ const loadCollection = async (userId: string): Promise<Collection> => {
 	} else if (status === OK) {
 		return parseResponse(response)
 	} else {
-		throw error(status, 'Could not get boardgames for user')
+		error(status, 'Could not get boardgames for user');
 	}
 }
 
@@ -97,7 +97,7 @@ const decodeHtml = (html: string) => {
 export async function loadFromBgg(userId: string): Promise<{ boardgames: Boardgame[] }> {
 	const collection = await loadCollection(userId)
 	if (!collection) {
-		throw error(500, 'Could not get boardgames for user')
+		error(500, 'Could not get boardgames for user');
 	}
 	const ids = collection.items.item.map((it) => it.objectid)
 	const stats = await prepareStats(ids)

@@ -23,7 +23,7 @@ export const _loadBoardgames = async (userId: string) => {
 export const load = async ({ params }) => {
 	const userId = params.slug
 	if (!validUserId(userId)) {
-		throw error(404, 'User cannot be found')
+		error(404, 'User cannot be found');
 	}
 	return {
 		userId
@@ -32,7 +32,7 @@ export const load = async ({ params }) => {
 
 const loadAndSaveFromBgg = async (userId: string) => {
 	if (!validUserId(userId)) {
-		throw error(500, 'Cannot load boardgames')
+		error(500, 'Cannot load boardgames');
 	}
 	const { boardgames } = await loadFromBgg(userId)
 	boardgameStore.set({
