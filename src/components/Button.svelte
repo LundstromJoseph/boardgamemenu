@@ -1,14 +1,22 @@
 <script lang="ts">
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { COLORS } from '../theme/colors'
 	import ButtonText from './typography/ButtonText.svelte'
 
-	export let icon: string
-	export let color: string = COLORS.TEXT_COLOR
+	interface Props {
+		icon: string;
+		color?: string;
+		children?: import('svelte').Snippet;
+	}
+
+	let { icon, color = COLORS.TEXT_COLOR, children }: Props = $props();
 </script>
 
-<button class="button" on:click style="--color: {color}">
-	<ButtonText><slot /></ButtonText>
-	<i class={icon} style="color: white;" />
+<button class="button" onclick={bubble('click')} style="--color: {color}">
+	<ButtonText>{@render children?.()}</ButtonText>
+	<i class={icon} style="color: white;"></i>
 </button>
 
 <style>

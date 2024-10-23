@@ -4,8 +4,12 @@
 	import RoundButton from '../RoundButton.svelte'
 	import IconText from '../typography/IconText.svelte'
 
-	export let index: number
-	export let update: (i: number) => void
+	interface Props {
+		index: number;
+		update: (i: number) => void;
+	}
+
+	let { index, update }: Props = $props();
 </script>
 
 <RoundButton

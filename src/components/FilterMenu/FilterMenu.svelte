@@ -11,7 +11,11 @@
 	import { boardgameStore } from '../../store/boardgames'
 	import { goto } from '$app/navigation'
 
-	export let onOutsideClicked: () => void
+	interface Props {
+		onOutsideClicked: () => void;
+	}
+
+	let { onOutsideClicked }: Props = $props();
 
 	const onReload = () => {
 		const userId = $boardgameStore.userId
@@ -29,7 +33,7 @@
 	in:scale
 	out:scale
 	use:clickOutside
-	on:outsideClicked={onOutsideClicked}>
+	onoutsideClicked={onOutsideClicked}>
 	<div class="content">
 		<PlayerCount />
 		<Complexity />

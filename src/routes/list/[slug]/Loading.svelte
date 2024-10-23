@@ -4,7 +4,11 @@
 	import BigHeader from '../../../components/typography/BigHeader.svelte'
 	import Header from '../../../components/typography/Header.svelte'
 
-	export let userId: string
+	interface Props {
+		userId: string;
+	}
+
+	let { userId }: Props = $props();
 </script>
 
 <div class="container" in:fade={{ delay: 500, duration: 500 }}>

@@ -5,7 +5,7 @@
 	import TwoPointSlider from '../TwoPointSlider.svelte'
 	import Title from '../typography/Title.svelte'
 
-	let range: Range = [$gameLength[0], $gameLength[1]]
+	let range: Range = $state([$gameLength[0], $gameLength[1]])
 
 	function save(range: Range) {
 		gameLength.set(range)

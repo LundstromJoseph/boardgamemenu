@@ -8,7 +8,11 @@
 	import Text from '../../../components/typography/Text.svelte'
 	import { clearUserId } from '../../../store/userId'
 
-	export let userId: string
+	interface Props {
+		userId: string;
+	}
+
+	let { userId }: Props = $props();
 
 	function goHome() {
 		clearUserId()

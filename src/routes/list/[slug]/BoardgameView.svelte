@@ -3,10 +3,14 @@
 	import type { Boardgame } from '../../../types/boardgames'
 	import BoardgameImage from './BoardgameImage.svelte'
 
-	export let item: Boardgame
+	interface Props {
+		item: Boardgame;
+	}
 
-	let width: number = 0
-	let show = false
+	let { item }: Props = $props();
+
+	let width: number = $state(0)
+	let show = $state(false)
 </script>
 
 <div class="boardgame">

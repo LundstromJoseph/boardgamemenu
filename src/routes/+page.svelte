@@ -8,8 +8,12 @@
 	import Text from '../components/typography/Text.svelte'
 	import { COLORS } from '../theme/colors'
 
-	let mounted = false
-	export let username: string = ''
+	let mounted = $state(false)
+	interface Props {
+		username?: string;
+	}
+
+	let { username = $bindable('') }: Props = $props();
 
 	const duration = 1500
 	const delay = 600
@@ -18,7 +22,7 @@
 		mounted = true
 	})
 
-	let errorMessage: string
+	let errorMessage: string = $state()
 
 	const submit = (event: Event & { currentTarget: EventTarget & HTMLFormElement }) => {
 		_handleSubmit(event).catch((e) => {
@@ -29,7 +33,7 @@
 
 {#if mounted}
 	<form
-		on:submit={submit}
+		onsubmit={submit}
 		style="display: flex; justify-content: center;"
 		out:fade={{ duration: 500 }}
 	>
@@ -51,7 +55,7 @@
 			<div in:fade={{ delay: delay * 3, duration: duration + delay * 0 }}>
 				<div class="button-wrapper">
 					<RoundButton label="submit-username" type="submit"
-						><i class="fa-solid fa-arrow-right fa-xl" /></RoundButton
+						><i class="fa-solid fa-arrow-right fa-xl"></i></RoundButton
 					>
 				</div>
 			</div>

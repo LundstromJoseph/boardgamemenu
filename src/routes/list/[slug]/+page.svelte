@@ -4,9 +4,9 @@
 	import BoardgameList from './BoardgameList.svelte'
 	import Loading from './Loading.svelte'
 
-	export let data
+	let { data } = $props();
 
-	$: boardgames = _loadBoardgames(data.userId)
+	let boardgames = $derived(_loadBoardgames(data.userId))
 </script>
 
 {#await boardgames}

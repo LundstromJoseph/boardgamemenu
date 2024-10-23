@@ -1,12 +1,22 @@
 <script lang="ts">
 	import { COLORS } from '../../theme/colors'
 
-	export let color: string = COLORS.TEXT_COLOR
-	export let align: 'start' | 'center' | 'end' = 'start'
-	export let style: string = ''
+	interface Props {
+		color?: string;
+		align?: 'start' | 'center' | 'end';
+		style?: string;
+		children?: import('svelte').Snippet;
+	}
+
+	let {
+		color = COLORS.TEXT_COLOR,
+		align = 'start',
+		style = '',
+		children
+	}: Props = $props();
 </script>
 
-<p class="text" style="--color: {color}; --align: {align}; {style}"><slot /></p>
+<p class="text" style="--color: {color}; --align: {align}; {style}">{@render children?.()}</p>
 
 <style>
 	.text {

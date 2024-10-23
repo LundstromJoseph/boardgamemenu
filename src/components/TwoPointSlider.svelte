@@ -1,18 +1,30 @@
 <script lang="ts">
+	import { preventDefault, stopPropagation } from 'svelte/legacy';
+
 	import { COLORS } from '../theme/colors'
 	import type { Range } from '../types/boardgames'
 
-	export let min = 0
-	export let max = 10
-	export let stepSize = 1
-	export let range: Range = [min, max]
-	export let onEnd: (range: Range) => void = () => undefined
-	export let accentColor: string = COLORS.TEXT_COLOR
+	interface Props {
+		min?: number;
+		max?: number;
+		stepSize?: number;
+		range?: Range;
+		onEnd?: (range: Range) => void;
+		accentColor?: string;
+	}
 
-	$: decimals = precision(stepSize)
+	let {
+		min = 0,
+		max = 10,
+		stepSize = 1,
+		range = $bindable([min, max]),
+		onEnd = () => undefined,
+		accentColor = COLORS.TEXT_COLOR
+	}: Props = $props();
 
-	let fill: HTMLDivElement
-	let slider: HTMLDivElement
+
+	let fill: HTMLDivElement = $state()
+	let slider: HTMLDivElement = $state()
 
 	function precision(a: number) {
 		if (!isFinite(a)) return 0
@@ -82,6 +94,7 @@
 			}
 		}
 	}
+	let decimals = $derived(precision(stepSize))
 </script>
 
 <div class="container">
@@ -94,18 +107,18 @@
         right: {100 * (1 - toPercentage(range[1]))}%;
 				--background-color: {accentColor};
       "
-		/>
+		></div>
 		<div
 			class="handle"
-			on:mousedown|preventDefault|stopPropagation={onMouseDown('left')}
-			on:touchmove|preventDefault|stopPropagation={onTouchMove('left')}
-			on:touchend|preventDefault|stopPropagation={() => onEnd(range)}
+			onmousedown={stopPropagation(preventDefault(onMouseDown('left')))}
+			ontouchmove={stopPropagation(preventDefault(onTouchMove('left')))}
+			ontouchend={stopPropagation(preventDefault(() => onEnd(range)))}
 			style="
         left: {100 * toPercentage(range[0])}%;
 				--background-color: {COLORS.ON_SURFACE_BUTTON};
 				--border-color: {COLORS.ON_SURFACE_BACKGROUND};
       "
-		/>
+		></div>
 		<div
 			class="handle"
 			style="
@@ -113,10 +126,10 @@
 				--background-color: {COLORS.ON_SURFACE_BUTTON};
 				--border-color: {COLORS.ON_SURFACE_BACKGROUND};
       "
-			on:mousedown|preventDefault|stopPropagation={onMouseDown('right')}
-			on:touchmove|preventDefault|stopPropagation={onTouchMove('right')}
-			on:touchend|preventDefault|stopPropagation={() => onEnd(range)}
-		/>
+			onmousedown={stopPropagation(preventDefault(onMouseDown('right')))}
+			ontouchmove={stopPropagation(preventDefault(onTouchMove('right')))}
+			ontouchend={stopPropagation(preventDefault(() => onEnd(range)))}
+		></div>
 	</div>
 </div>
 

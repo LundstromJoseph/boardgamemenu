@@ -6,13 +6,13 @@
 	import FilterMenuButton from './FilterMenu/FilterMenuButton.svelte'
 	import Title from './typography/Title.svelte'
 
-	let menuOpen: boolean = false
+	let menuOpen: boolean = $state(false)
 
-	$: boardgameCount = $boardgameStore.boardgames.length
+	let boardgameCount = $derived($boardgameStore.boardgames.length)
 
-	$: filteredCount = $filteredBoardgames.length
+	let filteredCount = $derived($filteredBoardgames.length)
 
-	$: text = boardgameCount ? `${filteredCount}/${boardgameCount} games visible` : ''
+	let text = $derived(boardgameCount ? `${filteredCount}/${boardgameCount} games visible` : '')
 
 	const onOutsideClicked = () => {
 		menuOpen = false

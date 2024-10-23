@@ -1,9 +1,11 @@
 <script>
-	export let onClick = () => {}
+	import { preventDefault, stopPropagation } from 'svelte/legacy';
+
+	let { onClick = () => {} } = $props();
 </script>
 
-<button class="fab" aria-label="filters-menu" on:mousedown|preventDefault|stopPropagation={onClick}>
-	<i class="fa-solid fa-bars fa-lg" />
+<button class="fab" aria-label="filters-menu" onmousedown={stopPropagation(preventDefault(onClick))}>
+	<i class="fa-solid fa-bars fa-lg"></i>
 </button>
 
 <style>

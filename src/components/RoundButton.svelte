@@ -1,13 +1,28 @@
 <script lang="ts">
+	import { createBubbler } from 'svelte/legacy';
+
+	const bubble = createBubbler();
 	import { COLORS } from '../theme/colors'
 
-	export let el: HTMLElement | undefined = undefined
-	export let selected = false
-	export let color: string = COLORS.TEXT_COLOR
-	export let type: HTMLButtonElement['type'] = 'button'
-	export let label: string
+	interface Props {
+		el?: HTMLElement | undefined;
+		selected?: boolean;
+		color?: string;
+		type?: HTMLButtonElement['type'];
+		label: string;
+		children?: import('svelte').Snippet;
+	}
 
-	$: classes = selected ? 'button selected-button' : 'button'
+	let {
+		el = $bindable(undefined),
+		selected = false,
+		color = COLORS.TEXT_COLOR,
+		type = 'button',
+		label,
+		children
+	}: Props = $props();
+
+	let classes = $derived(selected ? 'button selected-button' : 'button')
 </script>
 
 <button
@@ -16,9 +31,9 @@
 	class={classes}
 	style="background-color: {color};"
 	bind:this={el}
-	on:click
+	onclick={bubble('click')}
 >
-	<slot />
+	{@render children?.()}
 </button>
 
 <style>
