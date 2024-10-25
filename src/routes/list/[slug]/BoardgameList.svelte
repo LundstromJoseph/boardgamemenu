@@ -1,7 +1,7 @@
 <script lang="ts">
-	import BottomBar from '../../../components/BottomBar.svelte'
-	import { filteredBoardgames } from '../../../store/filteredBoardgames'
-	import { BOTTOM_BAR_HEIGHT } from '../../../theme/sizes'
+	import BottomBar from '$lib/components/BottomBar.svelte'
+	import { filteredBoardgames } from '$lib/store/filteredBoardgames'
+	import { BOTTOM_BAR_HEIGHT } from '$lib/theme/sizes'
 	import BoardgameView from './BoardgameView.svelte'
 </script>
 

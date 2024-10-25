@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { fade, slide } from 'svelte/transition'
-	import RoundButton from '../components/RoundButton.svelte'
-	import BigHeader from '../components/typography/BigHeader.svelte'
-	import Header from '../components/typography/Header.svelte'
+	import RoundButton from '$lib/components/RoundButton.svelte'
+	import BigHeader from '$lib/components/typography/BigHeader.svelte'
+	import Header from '$lib/components/typography/Header.svelte'
 	import { _handleSubmit } from './+page'
 	import { onMount } from 'svelte'
-	import Text from '../components/typography/Text.svelte'
-	import { COLORS } from '../theme/colors'
+	import Text from '$lib/components/typography/Text.svelte'
+	import { COLORS } from '$lib/theme/colors'
 
 	let mounted = $state(false)
 	interface Props {
-		username?: string;
+		username?: string
 	}
 
-	let { username = $bindable('') }: Props = $props();
+	let { username = $bindable('') }: Props = $props()
 
 	const duration = 1500
 	const delay = 600
@@ -22,7 +22,7 @@
 		mounted = true
 	})
 
-	let errorMessage: string = $state()
+	let errorMessage: string = $state('')
 
 	const submit = (event: Event & { currentTarget: EventTarget & HTMLFormElement }) => {
 		_handleSubmit(event).catch((e) => {
@@ -32,11 +32,7 @@
 </script>
 
 {#if mounted}
-	<form
-		onsubmit={submit}
-		style="display: flex; justify-content: center;"
-		out:fade={{ duration: 500 }}
-	>
+	<form onsubmit={submit} style="display: flex; justify-content: center;" out:fade={{ duration: 500 }}>
 		<div class="container">
 			<div in:fade={{ delay: delay * 0, duration: duration + delay * 3 }}>
 				<BigHeader>Hello</BigHeader>
@@ -54,9 +50,7 @@
 			{/if}
 			<div in:fade={{ delay: delay * 3, duration: duration + delay * 0 }}>
 				<div class="button-wrapper">
-					<RoundButton label="submit-username" type="submit"
-						><i class="fa-solid fa-arrow-right fa-xl"></i></RoundButton
-					>
+					<RoundButton label="submit-username" type="submit"><i class="fa-solid fa-arrow-right fa-xl"></i></RoundButton>
 				</div>
 			</div>
 		</div>

@@ -1,18 +1,17 @@
 <script lang="ts">
 	import { goto } from '$app/navigation'
-	import { page } from '$app/stores'
-	import Button from '../../../components/Button.svelte'
-	import DefaultContainer from '../../../components/DefaultContainer.svelte'
-	import Row from '../../../components/Row.svelte'
-	import Header from '../../../components/typography/Header.svelte'
-	import Text from '../../../components/typography/Text.svelte'
-	import { clearUserId } from '../../../store/userId'
+	import Button from '$lib/components/Button.svelte'
+	import DefaultContainer from '$lib/components/DefaultContainer.svelte'
+	import Row from '$lib/components/Row.svelte'
+	import Header from '$lib/components/typography/Header.svelte'
+	import Text from '$lib/components/typography/Text.svelte'
+	import { clearUserId } from '$lib/store/userId'
 
 	interface Props {
-		userId: string;
+		userId: string
 	}
 
-	let { userId }: Props = $props();
+	let { userId }: Props = $props()
 
 	function goHome() {
 		clearUserId()
@@ -28,6 +27,6 @@
 
 	<Row>
 		<Button icon="fa-solid fa-rotate">Try again</Button>
-		<Button icon="fa-solid fa-right-from-bracket" on:click={goHome}>Go to start</Button>
+		<Button icon="fa-solid fa-right-from-bracket" onclick={goHome}>Go to start</Button>
 	</Row>
 </DefaultContainer>

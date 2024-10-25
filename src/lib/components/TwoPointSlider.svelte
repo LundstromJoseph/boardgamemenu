@@ -1,16 +1,16 @@
 <script lang="ts">
-	import { preventDefault, stopPropagation } from 'svelte/legacy';
+	import { preventDefault, stopPropagation } from 'svelte/legacy'
 
 	import { COLORS } from '../theme/colors'
-	import type { Range } from '../types/boardgames'
+	import type { Range } from '$lib/types'
 
 	interface Props {
-		min?: number;
-		max?: number;
-		stepSize?: number;
-		range?: Range;
-		onEnd?: (range: Range) => void;
-		accentColor?: string;
+		min?: number
+		max?: number
+		stepSize?: number
+		range?: Range
+		onEnd?: (range: Range) => void
+		accentColor?: string
 	}
 
 	let {
@@ -20,11 +20,10 @@
 		range = $bindable([min, max]),
 		onEnd = () => undefined,
 		accentColor = COLORS.TEXT_COLOR
-	}: Props = $props();
+	}: Props = $props()
 
-
-	let fill: HTMLDivElement = $state()
-	let slider: HTMLDivElement = $state()
+	let fill: HTMLDivElement | undefined = $state()
+	let slider: HTMLDivElement | undefined = $state()
 
 	function precision(a: number) {
 		if (!isFinite(a)) return 0
@@ -106,8 +105,8 @@
         left: {100 * toPercentage(range[0])}%;
         right: {100 * (1 - toPercentage(range[1]))}%;
 				--background-color: {accentColor};
-      "
-		></div>
+      ">
+		</div>
 		<div
 			class="handle"
 			onmousedown={stopPropagation(preventDefault(onMouseDown('left')))}
@@ -117,8 +116,8 @@
         left: {100 * toPercentage(range[0])}%;
 				--background-color: {COLORS.ON_SURFACE_BUTTON};
 				--border-color: {COLORS.ON_SURFACE_BACKGROUND};
-      "
-		></div>
+      ">
+		</div>
 		<div
 			class="handle"
 			style="
@@ -128,8 +127,8 @@
       "
 			onmousedown={stopPropagation(preventDefault(onMouseDown('right')))}
 			ontouchmove={stopPropagation(preventDefault(onTouchMove('right')))}
-			ontouchend={stopPropagation(preventDefault(() => onEnd(range)))}
-		></div>
+			ontouchend={stopPropagation(preventDefault(() => onEnd(range)))}>
+		</div>
 	</div>
 </div>
 

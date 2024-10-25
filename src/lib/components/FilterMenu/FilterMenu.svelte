@@ -1,21 +1,21 @@
 <script lang="ts">
 	import { scale } from 'svelte/transition'
-	import { BOTTOM_BAR_HEIGHT } from '../../theme/sizes'
+	import { BOTTOM_BAR_HEIGHT } from '$lib/theme/sizes'
 	import GameLength from './GameLength.svelte'
 	import Complexity from './Complexity.svelte'
 	import PlayerCount from './PlayerCount.svelte'
-	import { COLORS } from '../../theme/colors'
-	import { clickOutside } from '../../directive/clickOutside'
+	import { COLORS } from '$lib/theme/colors'
+	import { clickOutside } from '$lib/directive/clickOutside'
 	import Title from '../typography/Title.svelte'
 	import Button from '../Button.svelte'
 	import { boardgameStore } from '../../store/boardgames'
 	import { goto } from '$app/navigation'
 
 	interface Props {
-		onOutsideClicked: () => void;
+		onOutsideClicked: () => void
 	}
 
-	let { onOutsideClicked }: Props = $props();
+	let { onOutsideClicked }: Props = $props()
 
 	const onReload = () => {
 		const userId = $boardgameStore.userId
@@ -40,13 +40,14 @@
 		<GameLength />
 		<div>
 			<Title style="font-size: x-small;">
-				Data supplied by <a style="color: white;" href="https://boardgamegeek.com" target="_blank"> boardgamegeek.com</a>
+				Data supplied by <a style="color: white;" href="https://boardgamegeek.com" target="_blank">
+					boardgamegeek.com</a>
 			</Title>
 		</div>
 	</div>
 	<div style="display: flex; flex-grow: 1; justify-content: flex-end; padding-right: 12px">
 		<div>
-			<Button on:click={onReload} color={COLORS.ON_SURFACE_BACKGROUND} icon={'fa-solid fa-xl fa-rotate'}>Reload</Button>
+			<Button onclick={onReload} color={COLORS.ON_SURFACE_BACKGROUND} icon={'fa-solid fa-xl fa-rotate'}>Reload</Button>
 		</div>
 	</div>
 </div>

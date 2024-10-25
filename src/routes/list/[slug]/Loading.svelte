@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { fade } from 'svelte/transition'
-	import Spinner from '../../../components/Spinner.svelte'
-	import BigHeader from '../../../components/typography/BigHeader.svelte'
-	import Header from '../../../components/typography/Header.svelte'
+	import Spinner from '$lib/components/Spinner.svelte'
+	import BigHeader from '$lib/components/typography/BigHeader.svelte'
+	import Header from '$lib/components/typography/Header.svelte'
 
 	interface Props {
-		userId: string;
+		userId: string
 	}
 
-	let { userId }: Props = $props();
+	let { userId }: Props = $props()
 </script>
 
 <div class="container" in:fade={{ delay: 500, duration: 500 }}>

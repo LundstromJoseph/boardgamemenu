@@ -1,4 +1,5 @@
 export type Boardgame = {
+	id: string
 	name: string
 	image: string
 	stats: {

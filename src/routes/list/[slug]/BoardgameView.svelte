@@ -1,13 +1,13 @@
 <script lang="ts">
-	import Title from '../../../components/typography/Title.svelte'
-	import type { Boardgame } from '../../../types/boardgames'
+	import Title from '$lib/components/typography/Title.svelte'
+	import type { Boardgame } from '$lib/types'
 	import BoardgameImage from './BoardgameImage.svelte'
 
 	interface Props {
-		item: Boardgame;
+		item: Boardgame
 	}
 
-	let { item }: Props = $props();
+	let { item }: Props = $props()
 
 	let width: number = $state(0)
 	let show = $state(false)

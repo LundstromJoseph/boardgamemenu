@@ -1,16 +1,14 @@
 <script lang="ts">
-	import { createBubbler } from 'svelte/legacy';
-
-	const bubble = createBubbler();
 	import { COLORS } from '../theme/colors'
 
 	interface Props {
-		el?: HTMLElement | undefined;
-		selected?: boolean;
-		color?: string;
-		type?: HTMLButtonElement['type'];
-		label: string;
-		children?: import('svelte').Snippet;
+		el?: HTMLElement | undefined
+		selected?: boolean
+		color?: string
+		type?: HTMLButtonElement['type']
+		label: string
+		children?: import('svelte').Snippet
+		onclick?: () => void
 	}
 
 	let {
@@ -19,20 +17,14 @@
 		color = COLORS.TEXT_COLOR,
 		type = 'button',
 		label,
-		children
-	}: Props = $props();
+		children,
+		onclick
+	}: Props = $props()
 
 	let classes = $derived(selected ? 'button selected-button' : 'button')
 </script>
 
-<button
-	aria-label={label}
-	{type}
-	class={classes}
-	style="background-color: {color};"
-	bind:this={el}
-	onclick={bubble('click')}
->
+<button aria-label={label} {type} class={classes} style="background-color: {color};" bind:this={el} {onclick}>
 	{@render children?.()}
 </button>
 

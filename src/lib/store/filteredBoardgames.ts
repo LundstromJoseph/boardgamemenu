@@ -1,5 +1,5 @@
+import type { Boardgame, Range } from '$lib/types'
 import { derived } from 'svelte/store'
-import type { Boardgame, Range } from '../types/boardgames'
 import { boardgameStore } from './boardgames'
 import { complexity, isAny as isAnyComplexity } from './complexity'
 import { gameLength, isAny as isAnyGameLength } from './gameLength'
@@ -39,9 +39,9 @@ const filter = (
 		filterFns.push((game) => withinRange(game.stats.complexityRating, filters.complexity))
 	}
 	if (!isAnyPlayerCount(filters.playerCount)) {
-		filterFns.push((game) =>
-			withinRange(filters.playerCount, [game.stats.minPlayers, game.stats.maxPlayers])
-		)
+		filterFns.push((game) => {
+			return withinRange(filters.playerCount, [game.stats.minPlayers, game.stats.maxPlayers])
+		})
 	}
 	if (!isAnyGameLength(filters.gameLength)) {
 		filterFns.push((game) => withinRange(game.stats.gameLength, filters.gameLength))

@@ -1,6 +1,6 @@
 import { browser } from '$app/environment'
+import type { Boardgame } from '$lib/types'
 import { writable } from 'svelte/store'
-import type { Boardgame } from '../types/boardgames'
 
 const BOARDGAMES_KEY = 'boardgame_menu_store'
 
@@ -18,7 +18,5 @@ if (browser) {
 		boardgameStore.set(JSON.parse(stored))
 	}
 
-	boardgameStore.subscribe((boardgames) =>
-		localStorage.setItem(BOARDGAMES_KEY, JSON.stringify(boardgames))
-	)
+	boardgameStore.subscribe((boardgames) => localStorage.setItem(BOARDGAMES_KEY, JSON.stringify(boardgames)))
 }

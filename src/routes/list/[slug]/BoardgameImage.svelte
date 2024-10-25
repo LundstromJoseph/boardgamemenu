@@ -1,18 +1,16 @@
 <script lang="ts">
-	import { run } from 'svelte/legacy';
-
-	import { observe } from '../../../directive/observe'
-	import type { Boardgame } from '../../../types/boardgames'
+	import type { Boardgame } from '$lib/types'
+	import { observe } from '../../../lib/directive/observe'
 
 	interface Props {
-		item: Boardgame;
-		width?: number;
-		show?: boolean;
+		item: Boardgame
+		width?: number
+		show?: boolean
 	}
 
-	let { item, width = $bindable(0), show = $bindable(false) }: Props = $props();
+	let { item, width = $bindable(0), show = $bindable(false) }: Props = $props()
 
-	let img: HTMLImageElement = $state()
+	let img: HTMLImageElement | undefined = $state()
 	let visibleInViewport = $state(false)
 
 	const onVisible = () => {
@@ -30,20 +28,14 @@
 		}
 	}
 
-	run(() => {
-		loadImage(img, item, visibleInViewport)
-	});
+	$effect.pre(() => {
+		if (img) {
+			loadImage(img, item, visibleInViewport)
+		}
+	})
 </script>
 
-<img
-	src="/placeholder.png"
-	use:observe
-	onvisible={onVisible}
-	class:show
-	bind:this={img}
-	class="img"
-	alt={item.name}
-/>
+<img src="/placeholder.png" use:observe onvisible={onVisible} class:show bind:this={img} class="img" alt={item.name} />
 
 <style>
 	* {
