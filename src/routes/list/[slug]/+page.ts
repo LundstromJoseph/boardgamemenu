@@ -1,14 +1,13 @@
 import { browser } from '$app/environment'
 
 import { loadFromBgg } from '$lib/bgg/api'
+import { boardgameStore } from '$lib/store/boardgames.svelte'
 import { error } from '@sveltejs/kit'
-import { get } from 'svelte/store'
 import { validUserId } from '../../../lib/fn/validation'
-import { boardgameStore } from '../../../lib/store/boardgames'
 
 export const _loadBoardgames = async (userId: string) => {
 	if (browser) {
-		const stored = get(boardgameStore)
+		const stored = boardgameStore.get()
 		if (stored.userId !== userId || !stored.boardgames.length) {
 			return loadAndSaveFromBgg(userId)
 		}

@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { formatPlayerCount, playerCount } from '../../store/playerCount'
+	import { formatPlayerCount } from '../../store/playerCount.svelte'
 	import { COLORS } from '../../theme/colors'
 	import RoundButton from '$lib/components/RoundButton.svelte'
 	import IconText from '$lib/components/typography/IconText.svelte'
+	import { boardgameStore } from '$lib/store/boardgames.svelte'
 
+	const playerCount = boardgameStore.filters.playerCount
 	interface Props {
 		index: number
 		update: (i: number) => void
@@ -14,7 +16,7 @@
 
 <RoundButton
 	color={COLORS.FILTER.PLAYER_COUNT}
-	selected={$playerCount === index}
+	selected={playerCount.get() === index}
 	onclick={() => update(index)}
 	label={`Set player count to ${index}`}>
 	<IconText>{formatPlayerCount(index)}</IconText>

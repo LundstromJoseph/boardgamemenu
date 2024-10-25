@@ -11,3 +11,8 @@ export type Boardgame = {
 }
 
 export type Range = readonly [number, number]
+
+export type State<T> = {
+	set: (newState: T) => void
+	get: () => T
+}

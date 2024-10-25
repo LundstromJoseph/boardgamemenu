@@ -1,12 +1,15 @@
 <script lang="ts">
-	import { HIGHEST_PLAYER_COUNT, playerCount } from '../../store/playerCount'
+	import { HIGHEST_PLAYER_COUNT } from '../../store/playerCount.svelte'
 	import PlayerCountButton from './PlayerCountButton.svelte'
 	import Title from '../typography/Title.svelte'
+	import { boardgameStore } from '$lib/store/boardgames.svelte'
+
+	const playerCount = boardgameStore.filters.playerCount
 
 	const array = Array.from(Array(HIGHEST_PLAYER_COUNT).keys())
 
 	const update = (count: number) => {
-		if ($playerCount == count) {
+		if (playerCount.get() === count) {
 			playerCount.set(0)
 		} else {
 			playerCount.set(count)

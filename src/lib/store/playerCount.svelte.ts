@@ -1,8 +1,8 @@
-import { writable } from 'svelte/store'
+import { simpleState } from '$lib/fn/simplestate.svelte'
 
 export const HIGHEST_PLAYER_COUNT = 20
 
-export const playerCount = writable<number>(0)
+export const playerCountState = simpleState<number>(0)
 
 export const isAny = (playerCount: number) => {
 	return playerCount === 0

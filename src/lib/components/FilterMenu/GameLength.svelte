@@ -1,11 +1,14 @@
 <script lang="ts">
-	import { HIGHEST_STEP, LOWEST_STEP, formatMinutes, gameLength } from '../../store/gameLength'
+	import { HIGHEST_STEP, LOWEST_STEP, formatMinutes } from '$lib/store/gameLength.svelte'
 	import { COLORS } from '../../theme/colors'
-	import type { Range } from '../../types/boardgames'
+	import type { Range } from '$lib/types'
 	import TwoPointSlider from '../TwoPointSlider.svelte'
 	import Title from '../typography/Title.svelte'
+	import { boardgameStore } from '$lib/store/boardgames.svelte'
 
-	let range: Range = $state([$gameLength[0], $gameLength[1]])
+	const gameLength = boardgameStore.filters.gameLength
+
+	let range: Range = $state(gameLength.get())
 
 	function save(range: Range) {
 		gameLength.set(range)
@@ -23,8 +26,7 @@
 			stepSize={15}
 			bind:range
 			accentColor={COLORS.FILTER.GAME_LENGTH}
-			onEnd={save}
-		/>
+			onEnd={save} />
 
 		<div style="display: flex; flex-direction: row;">
 			<div style="flex-grow: 1;">

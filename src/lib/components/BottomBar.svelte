@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { boardgameStore } from '../store/boardgames'
-	import { filteredBoardgames } from '../store/filteredBoardgames'
+	import { boardgameStore } from '../store/boardgames.svelte'
 	import { COLORS } from '../theme/colors'
 	import FilterMenu from './FilterMenu/FilterMenu.svelte'
 	import FilterMenuButton from './FilterMenu/FilterMenuButton.svelte'
@@ -8,9 +7,9 @@
 
 	let menuOpen: boolean = $state(false)
 
-	let boardgameCount = $derived($boardgameStore.boardgames.length)
+	let boardgameCount = $derived(boardgameStore.get().boardgames.length)
 
-	let filteredCount = $derived($filteredBoardgames.length)
+	let filteredCount = $derived(boardgameStore.getFiltered().length)
 
 	let text = $derived(boardgameCount ? `${filteredCount}/${boardgameCount} games visible` : '')
 
@@ -21,7 +20,7 @@
 
 <div class="bottom-bar" style="background-color: {COLORS.SURFACE};">
 	<div class="content">
-		<Title>{$boardgameStore.userId ?? ''}</Title>
+		<Title>{boardgameStore.get().userId ?? ''}</Title>
 		<Title>{text}</Title>
 	</div>
 </div>

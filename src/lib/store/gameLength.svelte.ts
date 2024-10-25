@@ -1,17 +1,16 @@
-import { writable } from 'svelte/store'
-import type { Range } from '../types/boardgames'
+import { simpleState } from '$lib/fn/simplestate.svelte'
+import type { Range } from '$lib/types'
 
 export const LOWEST_STEP = 15
 export const HIGHEST_STEP = 360
 
-export const gameLength = writable<Range>([LOWEST_STEP, HIGHEST_STEP])
+export const gameLengthState = simpleState<Range>([LOWEST_STEP, HIGHEST_STEP])
 
 export const formatMinutes = (fullMinutes: number) => {
 	const hours = Math.floor(fullMinutes / 60)
 	const minutes = fullMinutes - hours * 60
 	let formattedString = ''
-	formattedString =
-		formattedString + `${hours}:${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+	formattedString = formattedString + `${hours}:${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
 	if (fullMinutes === HIGHEST_STEP) {
 		formattedString += '+'
 	}

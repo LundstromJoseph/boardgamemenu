@@ -8,7 +8,7 @@
 	import { clickOutside } from '$lib/directive/clickOutside'
 	import Title from '../typography/Title.svelte'
 	import Button from '../Button.svelte'
-	import { boardgameStore } from '../../store/boardgames'
+	import { boardgameStore } from '../../store/boardgames.svelte'
 	import { goto } from '$app/navigation'
 
 	interface Props {
@@ -18,7 +18,7 @@
 	let { onOutsideClicked }: Props = $props()
 
 	const onReload = () => {
-		const userId = $boardgameStore.userId
+		const userId = boardgameStore.get().userId
 		boardgameStore.set({
 			userId: undefined,
 			boardgames: []

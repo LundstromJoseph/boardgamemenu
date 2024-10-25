@@ -1,18 +1,19 @@
 <script lang="ts">
-	import { complexity, complexityDescription, HIGHEST_COMPLEXITY, LOWEST_COMPLEXITY } from '$lib/store/complexity'
+	import { complexityDescription, HIGHEST_COMPLEXITY, LOWEST_COMPLEXITY } from '$lib/store/complexity.svelte'
 	import { COLORS } from '$lib/theme/colors'
 	import type { Range } from '$lib/types'
 	import TwoPointSlider from '$lib/components/TwoPointSlider.svelte'
 	import Title from '$lib/components/typography/Title.svelte'
+	import { boardgameStore } from '$lib/store/boardgames.svelte'
 
-	let range: Range = $state([$complexity[0], $complexity[1]])
+	let range: Range = boardgameStore.filters.complexity.get()
 
 	const description = (value: number) => {
 		return `${complexityDescription(value)} (${value})`
 	}
 
 	function save(range: Range) {
-		complexity.set(range)
+		boardgameStore.filters.complexity.set(range)
 	}
 </script>
 
