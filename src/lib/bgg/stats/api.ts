@@ -1,4 +1,4 @@
-import { error } from '@sveltejs/kit'
+import { callBggWithRetry } from '$lib/bgg/util'
 import simpleXmlToJson from 'simple-xml-to-json'
 import { parseBggBoardgameStatsResponse, type StatsResponse } from './parsing'
 
@@ -9,10 +9,6 @@ const boardgamesUrl = (ids: string[]) =>
 		','
 	)}`
 
-const promise = async (url: string): Promise<readonly [number, string]> => {
-	return fetch(url).then(async (e) => [e.status, await e.text()] as const)
-}
-
 const chunkBoardgameIds = (ids: string[]) => {
 	const chunkSize = 20 //BGG limit
 	const idChunks: string[][] = []
@@ -22,14 +18,16 @@ const chunkBoardgameIds = (ids: string[]) => {
 	return idChunks
 }
 
-export const fetchStats = async (ids: string[]): Promise<StatsResponse[]> => {
+export const fetchStats = async (ids: string[], cb: (chunkComplete: number) => void): Promise<StatsResponse[]> => {
 	const chunks = chunkBoardgameIds(ids)
 
 	let stats: StatsResponse[] = []
 
 	for (const chunk of chunks) {
-		stats = [...stats, ...(await loadBoardgames(chunk))]
-		await new Promise((res) => setTimeout(res, 5000))
+		const bggResponse = await callBggWithRetry(boardgamesUrl(chunk))
+		const chunkStats = parseResponse(bggResponse)
+		cb(chunkStats.length)
+		stats = [...stats, ...chunkStats]
 	}
 	return stats
 }
@@ -38,18 +36,3 @@ const parseResponse = (text: string): StatsResponse[] => {
 	const response = convertXML(text)
 	return parseBggBoardgameStatsResponse(response)
 }
-
-const loadBoardgames = async (ids: string[]): Promise<StatsResponse[]> => {
-	const [status, response] = await promise(boardgamesUrl(ids))
-	if (status === ACCEPTED) {
-		await new Promise((res) => setTimeout(res, 500))
-		return loadBoardgames(ids)
-	} else if (status === OK) {
-		return parseResponse(response)
-	} else {
-		throw error(status, 'Could not get boardgames for user')
-	}
-}
-
-const ACCEPTED = 202
-const OK = 200

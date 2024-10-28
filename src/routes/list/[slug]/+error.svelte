@@ -5,7 +5,7 @@
 	import Row from '$lib/components/Row.svelte'
 	import Header from '$lib/components/typography/Header.svelte'
 	import Text from '$lib/components/typography/Text.svelte'
-	import { clearUserId } from '$lib/store/userId'
+	import { clearLocalStorage } from '$lib/state/boardgames.svelte'
 
 	interface Props {
 		userId: string
@@ -14,7 +14,7 @@
 	let { userId }: Props = $props()
 
 	function goHome() {
-		clearUserId()
+		clearLocalStorage()
 		goto('/')
 	}
 </script>

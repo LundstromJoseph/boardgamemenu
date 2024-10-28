@@ -1,15 +1,21 @@
 <script lang="ts">
-	import { boardgameStore } from '../store/boardgames.svelte'
+	import { type BoardgameState } from '../state/boardgames.svelte'
 	import { COLORS } from '../theme/colors'
 	import FilterMenu from './FilterMenu/FilterMenu.svelte'
 	import FilterMenuButton from './FilterMenu/FilterMenuButton.svelte'
 	import Title from './typography/Title.svelte'
 
+	interface Props {
+		boardgameState: BoardgameState
+	}
+
+	let { boardgameState }: Props = $props()
+
 	let menuOpen: boolean = $state(false)
 
-	let boardgameCount = $derived(boardgameStore.get().boardgames.length)
+	let boardgameCount = $derived(boardgameState.getBoardgames().length)
 
-	let filteredCount = $derived(boardgameStore.getFiltered().length)
+	let filteredCount = $derived(boardgameState.getBoardgames(true).length)
 
 	let text = $derived(boardgameCount ? `${filteredCount}/${boardgameCount} games visible` : '')
 
@@ -20,13 +26,13 @@
 
 <div class="bottom-bar" style="background-color: {COLORS.SURFACE};">
 	<div class="content">
-		<Title>{boardgameStore.get().userId ?? ''}</Title>
+		<Title>{boardgameState.getUserId() ?? ''}</Title>
 		<Title>{text}</Title>
 	</div>
 </div>
 <FilterMenuButton onClick={() => (menuOpen = !menuOpen)} />
 {#if menuOpen}
-	<FilterMenu {onOutsideClicked} />
+	<FilterMenu {boardgameState} {onOutsideClicked} />
 {/if}
 
 <style>

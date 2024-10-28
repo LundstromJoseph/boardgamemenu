@@ -8,21 +8,19 @@
 	import { clickOutside } from '$lib/directive/clickOutside'
 	import Title from '../typography/Title.svelte'
 	import Button from '../Button.svelte'
-	import { boardgameStore } from '../../store/boardgames.svelte'
-	import { goto } from '$app/navigation'
+	import { goto, invalidateAll } from '$app/navigation'
+	import type { BoardgameState } from '$lib/state/boardgames.svelte'
 
 	interface Props {
 		onOutsideClicked: () => void
+		boardgameState: BoardgameState
 	}
 
-	let { onOutsideClicked }: Props = $props()
+	let { onOutsideClicked, boardgameState }: Props = $props()
 
 	const onReload = () => {
-		const userId = boardgameStore.get().userId
-		boardgameStore.set({
-			userId: undefined,
-			boardgames: []
-		})
+		const userId = $state(boardgameState.getUserId())
+		boardgameState.clear()
 		goto(`/list/${userId}`, { replaceState: true, invalidateAll: true })
 	}
 </script>
@@ -35,9 +33,9 @@
 	use:clickOutside
 	onoutsideClicked={onOutsideClicked}>
 	<div class="content">
-		<PlayerCount />
-		<Complexity />
-		<GameLength />
+		<PlayerCount playerState={boardgameState.filters.playerCount} />
+		<Complexity complexityState={boardgameState.filters.complexity} />
+		<GameLength gameLengthState={boardgameState.filters.gameLength} />
 		<div>
 			<Title style="font-size: x-small;">
 				Data supplied by <a style="color: white;" href="https://boardgamegeek.com" target="_blank">

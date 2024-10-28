@@ -1,18 +1,22 @@
 <script lang="ts">
-	import { HIGHEST_PLAYER_COUNT } from '../../store/playerCount.svelte'
+	import { HIGHEST_PLAYER_COUNT } from '../../state/playerCount.svelte'
 	import PlayerCountButton from './PlayerCountButton.svelte'
 	import Title from '../typography/Title.svelte'
-	import { boardgameStore } from '$lib/store/boardgames.svelte'
+	import type { BoardgameState } from '$lib/state/boardgames.svelte'
 
-	const playerCount = boardgameStore.filters.playerCount
+	interface Props {
+		playerState: BoardgameState['filters']['playerCount']
+	}
+
+	let { playerState }: Props = $props()
 
 	const array = Array.from(Array(HIGHEST_PLAYER_COUNT).keys())
 
 	const update = (count: number) => {
-		if (playerCount.get() === count) {
-			playerCount.set(0)
+		if (playerState.get() === count) {
+			playerState.set(0)
 		} else {
-			playerCount.set(count)
+			playerState.set(count)
 		}
 	}
 </script>
@@ -22,7 +26,7 @@
 	<div class="options">
 		{#each array as index}
 			<div style="min-width: 55px;">
-				<PlayerCountButton index={index + 1} {update} />
+				<PlayerCountButton {playerState} index={index + 1} {update} />
 			</div>
 		{/each}
 	</div>

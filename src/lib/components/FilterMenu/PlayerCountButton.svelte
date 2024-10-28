@@ -1,23 +1,30 @@
 <script lang="ts">
-	import { formatPlayerCount } from '../../store/playerCount.svelte'
+	import { HIGHEST_PLAYER_COUNT } from '../../state/playerCount.svelte'
 	import { COLORS } from '../../theme/colors'
 	import RoundButton from '$lib/components/RoundButton.svelte'
 	import IconText from '$lib/components/typography/IconText.svelte'
-	import { boardgameStore } from '$lib/store/boardgames.svelte'
+	import type { BoardgameState } from '$lib/state/boardgames.svelte'
 
-	const playerCount = boardgameStore.filters.playerCount
 	interface Props {
 		index: number
 		update: (i: number) => void
+		playerState: BoardgameState['filters']['playerCount']
 	}
+	let { index, update, playerState }: Props = $props()
 
-	let { index, update }: Props = $props()
+	const formattedPlayerCount = (playerCount: number) => {
+		if (playerCount === HIGHEST_PLAYER_COUNT) {
+			return HIGHEST_PLAYER_COUNT + '+'
+		} else {
+			return playerCount.toLocaleString(undefined, { maximumFractionDigits: 0 })
+		}
+	}
 </script>
 
 <RoundButton
 	color={COLORS.FILTER.PLAYER_COUNT}
-	selected={playerCount.get() === index}
+	selected={playerState.get() === index}
 	onclick={() => update(index)}
 	label={`Set player count to ${index}`}>
-	<IconText>{formatPlayerCount(index)}</IconText>
+	<IconText>{formattedPlayerCount(index)}</IconText>
 </RoundButton>

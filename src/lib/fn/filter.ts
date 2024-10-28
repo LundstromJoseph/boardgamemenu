@@ -1,6 +1,6 @@
-import { isAny as isAnyComplexity } from '$lib/store/complexity.svelte'
-import { isAny as isAnyGameLength } from '$lib/store/gameLength.svelte'
-import { isAny as isAnyPlayerCount } from '$lib/store/playerCount.svelte'
+import { isAny as isAnyComplexity } from '$lib/state/complexity.svelte'
+import { isAny as isAnyGameLength } from '$lib/state/gameLength.svelte'
+import { isAny as isAnyPlayerCount } from '$lib/state/playerCount.svelte'
 import type { Boardgame, Range } from '$lib/types'
 
 export const filterState = ({

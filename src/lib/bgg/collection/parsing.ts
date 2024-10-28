@@ -23,14 +23,14 @@ const convertItem = (item: CollectionItem): CollectionResponse['games'][number] 
 	const name = findFromChildren(item.children, 'name')
 	const image = findFromChildren(item.children, 'image')
 
-	if (name.length === 0 || image.length === 0) {
+	if (name.length === 0) {
 		throw wrongFormat('Missing required fields')
 	}
 
 	return {
 		id: item.objectid,
 		name: name[0].content,
-		image: image[0].content
+		image: image[0]?.content ?? '/placeholder.png'
 	}
 }
 

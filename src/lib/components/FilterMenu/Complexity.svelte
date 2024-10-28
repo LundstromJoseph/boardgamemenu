@@ -1,19 +1,35 @@
 <script lang="ts">
-	import { complexityDescription, HIGHEST_COMPLEXITY, LOWEST_COMPLEXITY } from '$lib/store/complexity.svelte'
+	import { HIGHEST_COMPLEXITY, LOWEST_COMPLEXITY } from '$lib/state/complexity.svelte'
 	import { COLORS } from '$lib/theme/colors'
 	import type { Range } from '$lib/types'
 	import TwoPointSlider from '$lib/components/TwoPointSlider.svelte'
 	import Title from '$lib/components/typography/Title.svelte'
-	import { boardgameStore } from '$lib/store/boardgames.svelte'
+	import type { BoardgameState } from '$lib/state/boardgames.svelte'
 
-	let range: Range = boardgameStore.filters.complexity.get()
-
-	const description = (value: number) => {
-		return `${complexityDescription(value)} (${value})`
+	interface Props {
+		complexityState: BoardgameState['filters']['complexity']
 	}
 
+	const complexityDescription = (range: Range) => {
+		return range.map((weight) => {
+			if (weight < 2.5) {
+				return `easy (${weight})`
+			} else if (weight < 4) {
+				return `moderate (${weight})`
+			} else {
+				return `hard (${weight})`
+			}
+		})
+	}
+
+	let { complexityState }: Props = $props()
+
+	let range = $state(complexityState.get())
+
+	let descriptions = $derived(complexityDescription(range))
+
 	function save(range: Range) {
-		boardgameStore.filters.complexity.set(range)
+		complexityState.set(range)
 	}
 </script>
 
@@ -29,13 +45,13 @@
 			accentColor={COLORS.FILTER.COMPLEXITY} />
 		<div style="display: flex; flex-direction: row;">
 			<div style="flex-grow: 1;">
-				<Title align="end">{description(range[0])}</Title>
+				<Title align="end">{descriptions[0]}</Title>
 			</div>
 			<div>
 				<Title>-</Title>
 			</div>
 			<div style="flex-grow: 1;">
-				<Title align="start">{description(range[1])}</Title>
+				<Title align="start">{descriptions[1]}</Title>
 			</div>
 		</div>
 	</div>

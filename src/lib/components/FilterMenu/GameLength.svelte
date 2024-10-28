@@ -1,17 +1,37 @@
 <script lang="ts">
-	import { HIGHEST_STEP, LOWEST_STEP, formatMinutes } from '$lib/store/gameLength.svelte'
+	import { HIGHEST_STEP, LOWEST_STEP } from '$lib/state/gameLength.svelte'
 	import { COLORS } from '../../theme/colors'
 	import type { Range } from '$lib/types'
 	import TwoPointSlider from '../TwoPointSlider.svelte'
 	import Title from '../typography/Title.svelte'
-	import { boardgameStore } from '$lib/store/boardgames.svelte'
+	import type { BoardgameState } from '$lib/state/boardgames.svelte'
 
-	const gameLength = boardgameStore.filters.gameLength
+	interface Props {
+		gameLengthState: BoardgameState['filters']['gameLength']
+	}
 
-	let range: Range = $state(gameLength.get())
+	const formatMinutes = (minutes: Range) => {
+		return minutes.map((minute) => {
+			const hours = Math.floor(minute / 60)
+			const minutes = minute - hours * 60
+			let formattedString = ''
+			formattedString = formattedString + `${hours}:${minutes.toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+			if (minute === HIGHEST_STEP) {
+				formattedString += '+'
+			}
+
+			return formattedString
+		})
+	}
+
+	let { gameLengthState }: Props = $props()
+
+	let range = $state(gameLengthState.get())
+
+	const minutes = $derived(formatMinutes(range))
 
 	function save(range: Range) {
-		gameLength.set(range)
+		gameLengthState.set(range)
 	}
 </script>
 
@@ -30,11 +50,11 @@
 
 		<div style="display: flex; flex-direction: row;">
 			<div style="flex-grow: 1;">
-				<Title align="end" color={COLORS.ON_SURFACE_TEXT}>{formatMinutes(range[0])}</Title>
+				<Title align="end" color={COLORS.ON_SURFACE_TEXT}>{minutes[0]}</Title>
 			</div>
 			<Title color={COLORS.ON_SURFACE_TEXT}>-</Title>
 			<div style="flex-grow: 1;">
-				<Title align="start" color={COLORS.ON_SURFACE_TEXT}>{formatMinutes(range[1])}</Title>
+				<Title align="start" color={COLORS.ON_SURFACE_TEXT}>{minutes[1]}</Title>
 			</div>
 		</div>
 	</div>

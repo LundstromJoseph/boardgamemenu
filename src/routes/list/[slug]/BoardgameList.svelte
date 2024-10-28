@@ -1,13 +1,19 @@
 <script lang="ts">
 	import BottomBar from '$lib/components/BottomBar.svelte'
-	import { boardgameStore } from '$lib/store/boardgames.svelte'
+	import { type BoardgameState } from '$lib/state/boardgames.svelte'
 	import { BOTTOM_BAR_HEIGHT } from '$lib/theme/sizes'
 	import BoardgameView from './BoardgameView.svelte'
+
+	interface Props {
+		boardgameState: BoardgameState
+	}
+
+	let { boardgameState }: Props = $props()
 </script>
 
-<BottomBar />
+<BottomBar {boardgameState} />
 <div class="result-container" style="--bottom-bar-height: {BOTTOM_BAR_HEIGHT}px;">
-	{#each boardgameStore.getFiltered() as item}
+	{#each boardgameState.getBoardgames(true) as item}
 		<BoardgameView {item} />
 	{/each}
 </div>

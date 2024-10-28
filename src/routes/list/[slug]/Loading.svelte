@@ -3,12 +3,14 @@
 	import Spinner from '$lib/components/Spinner.svelte'
 	import BigHeader from '$lib/components/typography/BigHeader.svelte'
 	import Header from '$lib/components/typography/Header.svelte'
+	import type { LoadingState } from '$lib/state/loading.svelte'
 
 	interface Props {
 		userId: string
+		loadingState: LoadingState
 	}
 
-	let { userId }: Props = $props()
+	let { userId, loadingState }: Props = $props()
 </script>
 
 <div class="container" in:fade={{ delay: 500, duration: 500 }}>
@@ -21,6 +23,9 @@
 	<div>
 		<Spinner />
 	</div>
+	{#if loadingState.getTotal() > 0}
+		<Header>Loaded {loadingState.getLoaded()} of {loadingState.getTotal()} boardgames</Header>
+	{/if}
 </div>
 
 <style>

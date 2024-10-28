@@ -1,16 +1,20 @@
 import { fetchCollection } from '$lib/bgg/collection/api'
 import type { StatsResponse } from '$lib/bgg/stats/parsing'
+import type { WorkerMessage } from '$lib/bgg/stats/worker'
+import type { LoadingState } from '$lib/state/loading.svelte'
 import type { Boardgame } from '$lib/types'
 import { error } from '@sveltejs/kit'
 
-export async function loadFromBgg(userId: string): Promise<{ boardgames: Boardgame[] }> {
+export async function loadFromBgg(userId: string, loadingState: LoadingState): Promise<{ boardgames: Boardgame[] }> {
 	const collection = await fetchCollection(userId)
 	if (!collection) {
 		error(500, 'Could not get boardgames for user')
 	}
 	const ids = collection.games.map((it) => it.id)
 
-	const stats = await prepareStats(ids)
+	loadingState.setTotal(ids.length)
+
+	const stats = await prepareStats(ids, loadingState)
 
 	return {
 		boardgames: collection.games.map((it) => ({
@@ -28,13 +32,13 @@ const decodeHtml = (html: string) => {
 	return txt.value
 }
 
-const prepareStats = async (ids: string[]): Promise<Record<string, Boardgame['stats']>> => {
+const prepareStats = async (ids: string[], loadingState: LoadingState): Promise<Record<string, Boardgame['stats']>> => {
 	const idChunks = chunkBoardgameIds(ids)
 	const stats: Record<string, Boardgame['stats']> = {}
 
 	const promises: Promise<StatsResponse[]>[] = []
 	for (const chunk of idChunks) {
-		promises.push(spawnWorker(chunk))
+		promises.push(spawnWorker(chunk, loadingState))
 	}
 
 	const chunks = await Promise.all(promises)
@@ -48,13 +52,18 @@ const prepareStats = async (ids: string[]): Promise<Record<string, Boardgame['st
 	return stats
 }
 
-const spawnWorker = async (ids: string[]): Promise<StatsResponse[]> => {
+const spawnWorker = async (ids: string[], loadingState: LoadingState): Promise<StatsResponse[]> => {
 	const worker = new Worker(new URL('./stats/worker.ts', import.meta.url), { type: 'module' })
 	worker.postMessage(ids)
 
 	const result = await new Promise<StatsResponse[]>((res) => {
 		worker.onmessage = (e) => {
-			res(e.data)
+			const message = e.data as WorkerMessage
+			if (message.type === 'chunk') {
+				loadingState.loadedMore(message.chunkComplete)
+			} else if (message.type === 'stats') {
+				res(message.stats)
+			}
 		}
 	})
 
@@ -62,7 +71,7 @@ const spawnWorker = async (ids: string[]): Promise<StatsResponse[]> => {
 }
 
 const chunkBoardgameIds = (ids: string[]) => {
-	const amountOfWorkers = 8
+	const amountOfWorkers = 1
 	if (ids.length <= amountOfWorkers) {
 		return [ids]
 	}

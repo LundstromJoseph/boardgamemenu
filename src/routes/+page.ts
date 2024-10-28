@@ -1,7 +1,7 @@
 import { goto } from '$app/navigation'
+import { createBoardgameState } from '$lib/state/boardgames.svelte'
 import { error } from '@sveltejs/kit'
 import { validUserId } from '../lib/fn/validation'
-import { boardgameStore } from '../lib/store/boardgames.svelte'
 
 export const _handleSubmit = async (event: Event & { currentTarget: EventTarget & HTMLFormElement }) => {
 	event.preventDefault()
@@ -14,8 +14,9 @@ export const _handleSubmit = async (event: Event & { currentTarget: EventTarget 
 }
 
 export const load = () => {
-	const data = boardgameStore.get()
-	if (data && data.userId && validUserId(data.userId)) {
-		goto(`/list/${data.userId}`)
+	const data = createBoardgameState()
+	const userId = data.getUserId()
+	if (userId && validUserId(userId)) {
+		goto(`/list/${userId}`)
 	}
 }
