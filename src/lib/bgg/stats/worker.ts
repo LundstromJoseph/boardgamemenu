@@ -1,12 +1,12 @@
 import { fetchStats } from '$lib/bgg/stats/api'
 import type { StatsResponse } from '$lib/bgg/stats/parsing'
 
-export type WorkerMessage = { type: 'chunk'; chunkComplete: number } | { type: 'stats'; stats: StatsResponse[] }
+export type StatsWorkerMessage = { status: 'rate_limited'; ids: string[] } | { status: 'ok'; stats: StatsResponse[] }
 
 self.onmessage = async (e) => {
 	const ids = e.data
-	const stats = await fetchStats(ids, (chunkComplete) => {
-		self.postMessage({ type: 'chunk', chunkComplete })
-	})
-	self.postMessage({ type: 'stats', stats })
+	const [stats, error] = await fetchStats(ids)
+	const message: StatsWorkerMessage = error ? { status: 'rate_limited', ids } : { status: 'ok', stats }
+
+	self.postMessage(message)
 }

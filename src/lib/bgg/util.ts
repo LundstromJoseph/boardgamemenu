@@ -6,18 +6,18 @@ const promiseCall = async (url: string) => {
 		.catch(async () => [CONFLICT, ''] as const)
 }
 
-export const callBggWithRetry = async (url: string, rateLimits = 0): Promise<string> => {
+export const callBggWithRetry = async (
+	url: string,
+	rateLimits = 0
+): Promise<[string, 'OK'] | [undefined, 'RATE_LIMITED']> => {
 	const [status, response] = await promiseCall(url)
 	if (status === ACCEPTED) {
 		await new Promise((res) => setTimeout(res, 500))
 		return callBggWithRetry(url, rateLimits)
 	} else if (status === OK) {
-		return response
+		return [response, 'OK']
 	} else if (status === RATE_LIMITED || status === CONFLICT) {
-		// Exponential backoff
-		const delay = 1.5 * 1.3 ** Math.min(rateLimits, 4)
-		await new Promise((res) => setTimeout(res, delay * 1000))
-		return callBggWithRetry(url, rateLimits + 1)
+		return [undefined, 'RATE_LIMITED']
 	} else {
 		throw error(status, 'Could not get boardgames for user')
 	}

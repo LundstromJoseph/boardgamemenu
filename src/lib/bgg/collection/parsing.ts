@@ -40,9 +40,12 @@ const findFromChildren = <T extends CollectionChildren, K extends KeysOfUnion<T>
 	array: T[],
 	key: K
 ): T extends { [key in K]: unknown } ? T[K][] : [] => {
-	return array
-		.filter((it) => it !== undefined)
-		.filter((it) => key in it)
-		.map((it) => it as Record<K, T>)
-		.map((it) => it[key]) as any
+	return (
+		array
+			.filter((it) => it !== undefined)
+			.filter((it) => key in it)
+			.map((it) => it as Record<K, T>)
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			.map((it) => it[key]) as any
+	)
 }

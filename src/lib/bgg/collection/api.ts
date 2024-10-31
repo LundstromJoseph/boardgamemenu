@@ -18,6 +18,10 @@ const parseCollection = (text: string): CollectionResponse => {
 }
 
 export const fetchCollection = async (userId: string): Promise<CollectionResponse> => {
-	const response = await callBggWithRetry(collectionUrl(userId))
+	const [response, error] = await callBggWithRetry(collectionUrl(userId))
+	if (error === 'RATE_LIMITED') {
+		await new Promise((res) => setTimeout(res, 500))
+		return fetchCollection(userId)
+	}
 	return parseCollection(response)
 }
