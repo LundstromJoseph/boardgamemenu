@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { HIGHEST_PLAYER_COUNT } from '../../state/playerCount.svelte'
-	import PlayerCountButton from './PlayerCountButton.svelte'
 	import Title from '../typography/Title.svelte'
 	import type { BoardgameState } from '$lib/state/boardgames.svelte'
+	import SinglePointSlider from '$lib/components/SinglePointSlider.svelte'
+	import { COLORS } from '$lib/theme/colors'
 
 	interface Props {
 		playerState: BoardgameState['filters']['playerCount']
@@ -10,57 +11,31 @@
 
 	let { playerState }: Props = $props()
 
-	const array = Array.from(Array(HIGHEST_PLAYER_COUNT).keys())
-
 	const update = (count: number) => {
-		if (playerState.get() === count) {
-			playerState.set(0)
-		} else {
-			playerState.set(count)
-		}
+		playerState.set(count)
 	}
+
+	let value = $state(playerState.get())
+
+	let text = $derived(value === 0 ? 'Any' : value === HIGHEST_PLAYER_COUNT ? `${HIGHEST_PLAYER_COUNT}+` : value)
 </script>
 
 <div>
-	<Title>Number of players</Title>
-	<div class="options">
-		{#each array as index}
-			<div style="min-width: 55px;">
-				<PlayerCountButton {playerState} index={index + 1} {update} />
-			</div>
-		{/each}
+	<div>
+		<Title>Number of players</Title>
+	</div>
+	<div>
+		<SinglePointSlider
+			accentColor={COLORS.FILTER.PLAYER_COUNT}
+			max={HIGHEST_PLAYER_COUNT}
+			min={0}
+			stepSize={1}
+			bind:value
+			onEnd={update} />
+	</div>
+	<div style="display: flex; flex-direction: row;">
+		<div style="flex-grow: 1;">
+			<Title align="center" color={COLORS.ON_SURFACE_TEXT}>{text}</Title>
+		</div>
 	</div>
 </div>
-
-<style>
-	.options {
-		display: flex;
-		flex-wrap: nowrap;
-		column-gap: 0.2em;
-		align-items: center;
-		width: 100%;
-		overflow-x: scroll;
-		overflow-y: hidden;
-		padding-bottom: 12px;
-	}
-
-	::-webkit-scrollbar {
-		width: 12px;
-		border-radius: 12px;
-	}
-
-	::-webkit-scrollbar-track {
-		background: #444;
-		border-radius: 12px;
-		margin: 30px 0;
-	}
-
-	::-webkit-scrollbar-thumb {
-		background: #fcba03;
-		border-radius: 12px;
-	}
-
-	::-webkit-scrollbar-thumb:hover {
-		background: #fcba03;
-	}
-</style>

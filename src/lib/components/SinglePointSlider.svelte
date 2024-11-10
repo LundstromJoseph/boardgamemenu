@@ -1,15 +1,13 @@
 <script lang="ts">
 	import { preventDefault, stopPropagation } from 'svelte/legacy'
-
 	import { COLORS } from '../theme/colors'
-	import type { Range } from '$lib/types'
 
 	interface Props {
 		min?: number
 		max?: number
 		stepSize?: number
-		range?: Range
-		onEnd?: (range: Range) => void
+		value?: number
+		onEnd?: (value: number) => void
 		accentColor?: string
 	}
 
@@ -17,12 +15,11 @@
 		min = 0,
 		max = 10,
 		stepSize = 1,
-		range = $bindable([min, max]),
+		value = $bindable(min),
 		onEnd = () => undefined,
 		accentColor = COLORS.TEXT_COLOR
 	}: Props = $props()
 
-	let fill: HTMLDivElement | undefined = $state()
 	let slider: HTMLDivElement | undefined = $state()
 
 	function precision(a: number) {
@@ -36,11 +33,15 @@
 		return p
 	}
 
-	const toPercentage = (value: number) => {
-		return (value - min) / (max - min)
+	function clamp(value: number, min: number, max: number) {
+		return Math.min(Math.max(value, min), max)
 	}
 
-	function calculateNewValues(variant: 'left' | 'right', clientX: number) {
+	const toPercentage = (val: number) => {
+		return (val - min) / (max - min)
+	}
+
+	function calculateNewValue(clientX: number) {
 		const sliderRect = slider?.getBoundingClientRect()
 
 		if (sliderRect) {
@@ -48,29 +49,24 @@
 			const sliderEnd = sliderRect.left + sliderRect.width
 
 			const percentageMoved = (clientX - sliderStart) / (sliderEnd - sliderStart)
-
 			const target = min + (max - min) * percentageMoved
 			const newValue = Number((Math.round(target / stepSize) * stepSize).toFixed(decimals))
-
-			if (variant === 'left') {
-				const clampedValue = clamp(newValue, min, max)
-				range = [clamp(newValue, min, max), Math.max(clampedValue, range[1])]
-			}
-			if (variant === 'right') {
-				const clampedValue = clamp(newValue, min, max)
-				range = [Math.min(range[0], clampedValue), clamp(newValue, min, max)]
-			}
+			value = clamp(newValue, min, max)
 		}
 	}
 
-	function onMouseDown(variant: 'left' | 'right') {
+	function onMouseDown() {
 		return function () {
 			const mouseMoveListener = (mouseEvent: MouseEvent) => {
-				calculateNewValues(variant, mouseEvent.x)
+				mouseEvent.stopPropagation()
+				mouseEvent.preventDefault()
+				calculateNewValue(mouseEvent.x)
 			}
 
-			const mouseUpListener = () => {
-				onEnd(range)
+			const mouseUpListener = (event: MouseEvent) => {
+				event.stopPropagation()
+				event.preventDefault()
+				onEnd(value)
 				window.removeEventListener('mousemove', mouseMoveListener)
 				window.removeEventListener('mouseup', mouseUpListener)
 			}
@@ -80,21 +76,14 @@
 		}
 	}
 
-	function clamp(value: number, min: number, max: number) {
-		return Math.min(Math.max(value, min), max)
-	}
+	function onTouchMove(e: TouchEvent) {
+		const touch = e.touches.item(0)
 
-	function onTouchMove(variant: 'left' | 'right') {
-		return function (e: TouchEvent) {
-			e.preventDefault()
-			e.stopPropagation()
-			const touch = e.touches.item(0)
-
-			if (touch) {
-				calculateNewValues(variant, touch.clientX)
-			}
+		if (touch) {
+			calculateNewValue(touch.clientX)
 		}
 	}
+
 	let decimals = $derived(precision(stepSize))
 </script>
 
@@ -102,50 +91,34 @@
 	<div class="slider" style="--background-color: {COLORS.ON_SURFACE_BACKGROUND}" bind:this={slider}>
 		<div
 			class="fill"
-			bind:this={fill}
 			style="
-        left: {100 * toPercentage(range[0])}%;
-        right: {100 * (1 - toPercentage(range[1]))}%;
+        width: {100 * toPercentage(value)}%;
 				--background-color: {accentColor};
       ">
 		</div>
 		<div
 			role="slider"
-			class="handle touch-none"
-			onmousedown={onMouseDown('left')}
-			ontouchmove={onTouchMove('left')}
-			ontouchend={() => onEnd(range)}
-			aria-valuenow={range[0]}
+			aria-valuenow={value}
 			tabindex={0}
+			class="handle touch-none"
+			onmousedown={stopPropagation(preventDefault(onMouseDown()))}
+			ontouchmove={onTouchMove}
+			ontouchend={stopPropagation(preventDefault(() => onEnd(value)))}
 			style="
-        left: {100 * toPercentage(range[0])}%;
+        left: {100 * toPercentage(value)}%;
 				--background-color: {COLORS.ON_SURFACE_BUTTON};
 				--border-color: {COLORS.ON_SURFACE_BACKGROUND};
       ">
-		</div>
-		<div
-			role="slider"
-			aria-valuenow={range[1]}
-			tabindex={1}
-			class="handle touch-none"
-			style="
-        left: {100 * toPercentage(range[1])}%;
-				--background-color: {COLORS.ON_SURFACE_BUTTON};
-				--border-color: {COLORS.ON_SURFACE_BACKGROUND};
-      "
-			onmousedown={onMouseDown('right')}
-			ontouchmove={onTouchMove('right')}
-			ontouchend={() => onEnd(range)}>
 		</div>
 	</div>
 </div>
 
 <style>
 	.container {
-		padding-left: 18px;
-		padding-right: 18px;
 		width: 100%;
 		height: 36px;
+		padding-left: 18px;
+		padding-right: 18px;
 		user-select: none;
 		white-space: nowrap;
 	}
@@ -173,5 +146,6 @@
 		position: absolute;
 		background-color: var(--background-color);
 		bottom: 0;
+		border-radius: 12px;
 	}
 </style>

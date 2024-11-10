@@ -25,7 +25,7 @@
 		flex-grow: 1;
 		border: 1px solid black;
 		display: flex;
-		justify-content: center;
+		justify-content: space-between;
 		align-items: center;
 	}
 </style>

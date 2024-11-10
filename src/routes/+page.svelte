@@ -32,7 +32,7 @@
 </script>
 
 {#if mounted}
-	<form onsubmit={submit} style="display: flex; justify-content: center;" out:fade={{ duration: 500 }}>
+	<form onsubmit={submit} class="flex justify-center" out:fade={{ duration: 500 }}>
 		<div class="container">
 			<div in:fade={{ delay: delay * 0, duration: duration + delay * 3 }}>
 				<BigHeader>Hello</BigHeader>
