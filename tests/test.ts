@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
-import { data as collectionData } from './collection.xml'
 import { data as boardgamesData } from './boardgames.xml'
+import { data as collectionData } from './collection.xml'
 
 test.beforeEach(async ({ context }) => {
 	await context.route('*/**/collection', (route) => route.abort())
@@ -46,11 +46,25 @@ test('Change player amount', async ({ page }) => {
 	await page.goto('/list/testuser', { waitUntil: 'networkidle' })
 	await expect(page.getByText('CODENAMES')).toBeVisible()
 
-	await page.getByLabel('filters-menu', { exact: true }).click()
+	await page.getByLabel('open-side-menu', { exact: true }).click()
 
-	await expect(page.getByLabel('Set player count to 1', { exact: true })).toBeVisible()
+	await expect(page.getByRole('slider').first()).toBeVisible()
 
-	await page.getByLabel('Set player count to 1', { exact: true }).click()
+	const slider = page.getByRole('slider').first()
+
+	await slider.hover()
+	const sliderBoundingBox = await slider.boundingBox()
+	if (!sliderBoundingBox) {
+		throw new Error('Slider bounding box not found')
+	}
+	await page.mouse.down()
+	for (let i = 0; i < 100; i++) {
+		if ((await slider.getAttribute('aria-valuenow')) === '1') {
+			break
+		}
+		await page.mouse.move(sliderBoundingBox.x + i, 0)
+	}
+	await page.mouse.up()
 
 	await expect(page.getByText('CODENAMES')).not.toBeVisible()
 	await expect(page.getByText('WINGSPAN')).toBeVisible()
