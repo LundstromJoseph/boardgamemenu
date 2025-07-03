@@ -53,8 +53,8 @@
 			out:slide={{ axis: 'x' }}
 			onoutsideClicked={() => (show = false)}
 			use:clickOutside
-			class="p-4 w-open-side-menu-width bg-black bg-opacity-90 flex flex-col align-center gap-4">
-			<section class="w-side-menu-content-width">
+			class="p-4 w-open-side-menu bg-black bg-opacity-90 flex flex-col align-center gap-4">
+			<section class="w-side-menu-content">
 				<header class="flex justify-between">
 					<h1 class="text-white uppercase">{boardgameState.getUserId()}</h1>
 					<MoreMenu>
@@ -67,7 +67,7 @@
 				</header>
 				<h2 class="text-white uppercase inline">{text}</h2>
 			</section>
-			<section class="w-side-menu-content-width flex flex-col self-center justify-center gap-4">
+			<section class="w-side-menu-content flex flex-col self-center justify-center gap-4">
 				<h3 class="text-white">Filters</h3>
 				<PlayerCount playerState={boardgameState.filters.playerCount} />
 				<Complexity complexityState={boardgameState.filters.complexity} />

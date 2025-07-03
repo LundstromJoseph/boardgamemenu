@@ -1,3 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+
+@theme {
+    --width-side-menu: 30px;
+    --width-open-side-menu: 300px;
+    --width-side-menu-content: 260px;
+    --height-bottom-bar: 30px;
+}
